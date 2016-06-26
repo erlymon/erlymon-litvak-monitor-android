@@ -19,7 +19,8 @@
   -->
 
 <resources>
-    <string name="appName">TraccarLitvakM (fork Erlymon Monitor)</string>
+    <string name="appName">TraccarLitvakM</string>
+    <string name="appLogo">TraccarLitvakM</string>
     <string name="settingsAccount">Профил</string>
     <string name="sharedEdit">Редакция</string>
     <string name="sharedRemove">Изтриване</string>
@@ -103,7 +104,6 @@
     <string name="settingsTwelveHourFormat">12-hour Format</string>
     <string name="settingsUsers">Потребител</string>
     <string name="aboutTitle">About</string>
-    <string name="appLogo">TraccarLitvakM</string>
     <string name="aboutWeb">For more information visit\nwww.erlymon.org/apps</string>
     <string name="aboutLicense">This application is free and open source, source code is licensed under GNU General Public License, Version 3.0 and available on GitHub.</string>
     <string name="aboutDescription">TraccarLitvakM (fork Erlymon Monitor) is an Android  application. It can work with Traccar Web UI Mod (Tracckar Litvak) open source server software.</string>
