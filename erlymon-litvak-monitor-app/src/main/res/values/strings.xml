@@ -137,7 +137,7 @@
     <string name="open_cycle_map" translatable="false">Open Cycle Map</string>
     <string name="open_bgmountains_map" translatable="false">BgMountains Map</string>
     <string name="open_bgtopo_map" translatable="false">BgTopo Map</string>
-    <string name="unknown">Unknown</string>
+    <string name="unknown" translatable="false">Unknown</string>
     <string name="positionAddress">Address</string>
     <string name="positionOther">Other</string>
 </resources>
