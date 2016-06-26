@@ -24,9 +24,9 @@ import com.chibatching.kotpref.KotprefModel
  */
 
 object MainPref : KotprefModel() {
-    var login: String by stringPrefVar(default = "monitor")
-    var password: String by stringPrefVar(default = "123456")
+    var login: String by stringPrefVar(default = "")
+    var password: String by stringPrefVar(default = "")
 
-    var dns: String by stringPrefVar(default = "52.28.142.249")
-    var sslOrTls: Boolean by booleanPrefVar(default = false)
+    var dns: String by stringPrefVar(default = "d.traccar.litvak.su")
+    var sslOrTls: Boolean by booleanPrefVar(default = true)
 }
