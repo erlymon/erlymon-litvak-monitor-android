@@ -1,0 +1,163 @@
+/*
+ * Copyright (c) 2016, Sergey Penkovsky <sergey.penkovsky@gmail.com>
+ *
+ * This file is part of TraccarLitvakM (fork Erlymon Monitor).
+ *
+ * TraccarLitvakM (fork Erlymon Monitor) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * TraccarLitvakM (fork Erlymon Monitor) is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with TraccarLitvakM (fork Erlymon Monitor).  If not, see <http://www.gnu.org/licenses/>.
+ */
+apply plugin: 'com.android.application'
+//Retrolambda plugin
+apply plugin: 'me.tatarka.retrolambda'
+//Databinding plugin
+//apply plugin: 'com.android.databinding'
+// Realm
+apply plugin: 'realm-android'
+
+// kotlin
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+def getVersionCode = { ->
+    try {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'rev-list', '--first-parent', '--count', 'master'
+            standardOutput = stdout
+        }
+        return Integer.parseInt(stdout.toString().trim())
+    }
+    catch (ignored) {
+        return -1;
+    }
+}
+
+def getVersionName = { ->
+    try {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'describe', '--tags', '--dirty'
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
+    }
+    catch (ignored) {
+        return null;
+    }
+}
+
+android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        applicationId "org.erlymon.litvak.monitor"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode getVersionCode()
+        versionName getVersionName()
+        //archivesBaseName = "erlymon-monitor-$versionName"
+
+        // Enabling multidex support.
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    /*
+    signingConfigs {
+        release {
+            storeFile file('../android.keystore')
+            keyAlias 'erlymon-soft'
+            storePassword ''
+            keyPassword ''
+        }
+    }
+    */
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:design:23.4.0'
+
+    compile 'com.android.support:multidex:1.0.0'
+
+
+    // log
+    compile 'org.slf4j:slf4j-api:1.7.12'
+    compile 'com.github.tony19:logback-android-core:1.0.10-2'
+    compile 'com.github.tony19:logback-android-classic:1.0.10-2'
+
+    //kotlin
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+    compile 'com.chibatching:kotpref:1.2.0'
+
+    // osmdroid
+    compile project(":OSMBonusPack")
+
+    // realm
+    compile 'io.realm:android-adapters:1.2.1'
+
+    // litvak core
+    compile project(":erlymon-litvak-core")
+}
+
+buildscript {
+    ext.kotlin_version = '1.0.2-eap-15'
+
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
+
+    }
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven { url "https://jitpack.io" }
+    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+}
+/*
+task requestPasswords << {
+    android.signingConfigs.release.storePassword = new String(System.console().readPassword('\nStore password: '))
+    android.signingConfigs.release.keyPassword = new String(System.console().readPassword('Key password: '))
+}
+
+tasks.whenTaskAdded { theTask ->
+    if (theTask.name.equals('packageRelease')) {
+        theTask.dependsOn 'requestPasswords'
+    }
+}
+*/

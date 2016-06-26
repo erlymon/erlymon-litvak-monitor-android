@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2016, Sergey Penkovsky <sergey.penkovsky@gmail.com>
+  ~
+  ~ This file is part of TraccarLitvakM (fork Erlymon Monitor).
+  ~
+  ~ TraccarLitvakM (fork Erlymon Monitor) is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ TraccarLitvakM (fork Erlymon Monitor) is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with TraccarLitvakM (fork Erlymon Monitor).  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <string name="appName">TraccarLitvakM</string>
+    <string name="settingsAccount">Fiók</string>
+    <string name="sharedEdit">Szerkesztés</string>
+    <string name="devicePositionsTitle">üzenetek</string>
+    <string name="sharedRemove">Törlés</string>
+    <string name="devicesTitle">Eszközök</string>
+    <string name="mapTitle">Térkép</string>
+    <string name="sharedSave">Mentés</string>
+    <string name="settingsTitle">Beállítások</string>
+    <string name="sharedShowOnMapTItle">Mutasd a térképen</string>
+    <string name="loginSubmit">Bejelentkezés</string>
+    <string name="logoutSubmit">Kilépés</string>
+    <string name="registerSubmit">Regisztráció</string>
+    <string name="sharedBackPressed">Nyomja meg ismét a kilépéshez</string>
+
+    <string name="errorCreateSession">Access is denied</string>
+    <string name="errorCreateAccount">Failed to create user</string>
+    <string name="errorGetServer">Failed to download information about the server</string>
+    <string name="errorGetDevices">Failed to load the list of devices</string>
+    <string name="errorGetSession">Failed to load the session data</string>
+    <string name="errorUpdateAccount">Unable to update your user information</string>
+    <string name="errorCreateDevice">Failed to create item</string>
+    <string name="errorUpdateDevice">Failed to update item</string>
+    <string name="errorGetPositions">Could not load messages specified interval</string>
+    <string name="errorDeleteDevice">Unable to remove the item</string>
+    <string name="errorInvalidEmail">This email address is invalid</string>
+    <string name="errorInvalidPassword">This password is too short</string>
+    <string name="errorIncorrectPassword">This password is incorrect</string>
+    <string name="errorFieldRequired">This field is required</string>
+    <string name="errorPermissionRationale">Contacts permissions are needed for providing email completions.</string>
+    <!--
+    <string name="errorCreateAccount">Nem sikerült létrehozni a fiókot</string>
+    <string name="errorCreateDevice">Nem sikerült létrehozni a készülék</string>
+    <string name="errorCreateSession">Hozzáférés megtagadva</string>
+    <string name="errorDeleteDevice">Nem sikerült eltávolítani az eszközt</string>
+    <string name="errorFieldRequired">Ezt a mezőt kötelező</string>
+    <string name="errorGetDevices">Nem sikerült betölteni az eszközök listáját</string>
+    <string name="errorGetPositions">Nem sikerült letölteni az üzeneteket egy adott intervallumban</string>
+    <string name="errorGetServer">Nem sikerült letölteni a szerver adatok</string>
+    <string name="errorGetSession">Nem sikerült betölteni az adatokat ülés</string>
+    <string name="errorIncorrectPassword">Ez a jelszó helytelen</string>
+    <string name="errorInvalidEmail">Ez az e-mail cím érvénytelen</string>
+    <string name="errorInvalidPassword">Ez a jelszó túl rövid</string>
+    <string name="errorUpdateAccount">Nem sikerült frissíteni a számla</string>
+    <string name="errorUpdateDevice">Nem sikerült frissíteni a készüléket</string>
+    <string name="errorPermissionRationale">Contacts permissions are needed for providing email completions.</string>
+    -->
+    <string name="positionAltitude">Magasság</string>
+    <string name="positionCourse">Irány</string>
+    <string name="positionLatitude">Szélességi fok</string>
+    <string name="positionLongitude">Hosszúsági fok</string>
+    <string name="positionSpeed">Sebesség</string>
+    <string name="positionFixTime">Idő</string>
+    <string name="positionUnknown">Ismeretlen</string>
+    <string name="positionValid">Valós</string>
+    <string name="sharedLoading">Betöltés…</string>
+    <string name="sharedRegistryNewAccount">A felhasználói regisztráció sikeresen befejeződött</string>
+    <string name="sharedRemoveConfirm">Biztosan törli?</string>
+    <string name="serverConfigHost">DNS vagy IP: PORT</string>
+    <string name="deviceIdentifier">Azonosító</string>
+    <string name="userName">Név</string>
+    <string name="userPassword">Jelszó</string>
+    <string name="serverConfigUseNewProtocol">Kezelhető az új protokoll</string>
+    <string name="serverConfigUseSecure">Kezelhető SSL/TLS</string>
+    <string name="serverConfigProtocolType">Protokoll típusa</string>
+    <string name="listTitle">Lista</string>
+    <string name="loginTitle">Bejelentkezés</string>
+    <string name="registerTitle">Regisztráció</string>
+    <string name="deviceTitle">Eszköz</string>
+    <string name="serverConfigTitle">Szerver</string>
+    <string name="serverConfigsListTitle">Kiszolgálók listáját</string>
+    <string name="sharedWait">Várj …</string>
+    <string name="userEmail">Email</string>
+    <string name="positionsTitle">Positions</string>
+    <string name="configServerDns">DNS or IP:PORT</string>
+    <string name="commandFrequency">Frekvencia</string>
+    <string name="sharedCommandResult">The command completed successfully</string>
+    <string name="sharedSendCommand">Send command</string>
+    <string name="commandTitle"> Parancs</string>
+    <string name="commandUnit">Egység</string>
+    <string name="engineResume">Engine Resume</string>
+    <string name="engineStop">Engine Stop</string>
+    <string name="errorSendCommand">The command is not executed</string>
+    <string name="positionPeriodic">Periodic Reporting</string>
+    <string name="positionStop">Stop Reporting</string>
+    <string name="mapOsm">Open Street Map</string>
+    <string name="mapLayer">Térkép réteg</string>
+    <string name="mapCustom">Egyéni térkép</string>
+    <string name="mapBingRoad">Bing Maps Road</string>
+    <string name="mapBingMapKey">Bing Maps kulcs</string>
+    <string name="mapBingAerial">Bing Maps Aerial</string>
+    <string name="serverZoom">Nagyítás</string>
+    <string name="serverReadOnly">Csak olvasható</string>
+    <string name="serverRegistration">Regisztráció</string>
+    <string name="settingsDevices">Eszközök</string>
+    <string name="settingsServer">Szerver</string>
+    <string name="settingsSpeedUnit">Sebesség</string>
+    <string name="settingsDistanceUnit">Távolság</string>
+    <string name="settingsTwelveHourFormat">12-órás formátum</string>
+    <string name="settingsUsers">Felhasználók</string>
+    <string name="userAdmin">Adminisztrátor</string>
+    <string name="aboutTitle">About</string>
+    <string name="appLogo">TraccarLitvakM</string>
+    <string name="aboutWeb">For more information visit\nwww.erlymon.org/apps</string>
+    <string name="aboutLicense">This application is free and open source, source code is licensed under GNU General Public License, Version 3.0 and available on GitHub.</string>
+    <string name="aboutDescription">TraccarLitvakM (fork Erlymon Monitor) is an Android  application. It can work with Traccar Web UI Mod (Tracckar Litvak) open source server software.</string>
+    <string name="userTitle">User</string>
+    <string name="userLogin">Login</string>
+    <string name="positionAddress">Address</string>
+    <string name="positionOther">Other</string>
+</resources>

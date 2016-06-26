@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2016, Sergey Penkovsky <sergey.penkovsky@gmail.com>
+  ~
+  ~ This file is part of TraccarLitvakM (fork Erlymon Monitor).
+  ~
+  ~ TraccarLitvakM (fork Erlymon Monitor) is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ TraccarLitvakM (fork Erlymon Monitor) is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with TraccarLitvakM (fork Erlymon Monitor).  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <string name="appName">TraccarLitvakM (fork Erlymon Monitor)</string>
+    <string name="settingsAccount">Профил</string>
+    <string name="sharedEdit">Редакция</string>
+    <string name="sharedRemove">Изтриване</string>
+    <string name="devicesTitle">Устройства</string>
+    <string name="mapTitle">Карта</string>
+    <string name="sharedSave">Запази</string>
+    <string name="settingsTitle">Настройки</string>
+    <string name="loginSubmit">Вход</string>
+    <string name="logoutSubmit">Изход</string>
+    <string name="registerSubmit">Регистрация</string>
+    <string name="sharedBackPressed">Натиснете още веднъж за вход</string>
+    <string name="errorFieldRequired">Задължително поле</string>
+    <string name="errorIncorrectPassword">Неправилна Парола</string>
+    <string name="errorInvalidEmail">Невалиден адрес</string>
+    <string name="errorInvalidPassword">Твърде кратка парола</string>
+    <string name="sharedRegistryNewAccount">Регистрацията е завършена успешно</string>
+    <string name="serverConfigHost">DNS или IP:PORT</string>
+    <string name="deviceIdentifier">Идентификатор</string>
+    <string name="userName">Име</string>
+    <string name="userPassword">Парола</string>
+    <string name="loginTitle">Вход</string>
+    <string name="registerTitle">Регистрация</string>
+    <string name="deviceTitle">Устройство</string>
+    <string name="devicePositionsTitle">Съобщения</string>
+    <string name="positionAltitude">Надморска височина</string>
+    <string name="positionCourse">Курс</string>
+    <string name="positionLatitude">Географска Ширина</string>
+    <string name="positionLongitude">Географска Дължина</string>
+    <string name="positionSpeed">Скорост</string>
+    <string name="positionFixTime">Време</string>
+    <string name="positionUnknown">Неизвестно</string>
+    <string name="positionValid">Валидност</string>
+    <string name="listTitle">Списък</string>
+    <string name="sharedWait">Изчакайте…</string>
+    <string name="sharedLoading">Зареждане...</string>
+    <string name="sharedRemoveConfirm">Изтриване на елемента?</string>
+    <string name="errorCreateAccount">Не успешно създаване на Профил</string>
+    <string name="errorCreateSession">Достъпът е забранен</string>
+    <string name="errorGetDevices">Не успешно зареждане на устройствата</string>
+    <string name="errorGetSession">Не успешно зареждане на данните на сесията</string>
+    <string name="errorGetServer">Не успешно зареждане на данните на сървъра</string>
+    <string name="errorCreateDevice">Не успешно създаване на устройство</string>
+    <string name="errorGetPositions">Не успешно зареждане на сообщенията за интервала</string>
+    <string name="errorUpdateAccount">Не успешно обновяване на Профила</string>
+    <string name="errorUpdateDevice">Не успешно обновяване на устройството</string>
+    <string name="errorDeleteDevice">Не успешно изтриване на устройство</string>
+    <string name="serverConfigsListTitle">Список серверов</string>
+    <string name="serverConfigTitle">Сервер</string>
+    <string name="serverConfigUseNewProtocol">Использовать новый протокол</string>
+    <string name="sharedShowOnMapTItle">Покаже на картата</string>
+    <string name="serverConfigUseSecure">Използване на SSL / TLS</string>
+    <string name="serverConfigProtocolType">Протокол Type</string>
+    <string name="userEmail">Email</string>
+    <string name="errorPermissionRationale">Contacts permissions are needed for providing email completions.</string>
+    <string name="positionsTitle">Positions</string>
+    <string name="configServerDns">DNS or IP:PORT</string>
+    <string name="commandFrequency">Честота</string>
+    <string name="sharedCommandResult">The command completed successfully</string>
+    <string name="sharedSendCommand">Send command</string>
+    <string name="commandTitle">Команда</string>
+    <string name="commandUnit">Мерна единица</string>
+    <string name="engineResume">Engine Resume</string>
+    <string name="engineStop">Engine Stop</string>
+    <string name="errorSendCommand">The command is not executed</string>
+    <string name="positionPeriodic">Periodic Reporting</string>
+    <string name="positionStop">Stop Reporting</string>
+    <string name="userAdmin">Admin</string>
+    <string name="mapBingAerial">Bing Maps Aerial</string>
+    <string name="mapBingRoad">Bing Maps Road</string>
+    <string name="mapCustom">Потребителска Карта</string>
+    <string name="mapOsm">Open Street Map</string>
+    <string name="mapBingMapKey">Bing Maps Key</string>
+    <string name="mapLayer">Слой</string>
+    <string name="serverZoom">Приближение</string>
+    <string name="serverRegistration">Регистрация</string>
+    <string name="serverReadOnly">Только чтение</string>
+    <string name="settingsDevices">Устройства</string>
+    <string name="settingsDistanceUnit">Разстояние</string>
+    <string name="settingsSpeedUnit">Скорост</string>
+    <string name="settingsServer">Сървър</string>
+    <string name="settingsTwelveHourFormat">12-hour Format</string>
+    <string name="settingsUsers">Потребител</string>
+    <string name="aboutTitle">About</string>
+    <string name="appLogo">TraccarLitvakM</string>
+    <string name="aboutWeb">For more information visit\nwww.erlymon.org/apps</string>
+    <string name="aboutLicense">This application is free and open source, source code is licensed under GNU General Public License, Version 3.0 and available on GitHub.</string>
+    <string name="aboutDescription">TraccarLitvakM (fork Erlymon Monitor) is an Android  application. It can work with Traccar Web UI Mod (Tracckar Litvak) open source server software.</string>
+    <string name="userTitle">Потребител</string>
+    <string name="userLogin">Login</string>
+    <string name="positionAddress">Address</string>
+    <string name="positionOther">Other</string>
+</resources>

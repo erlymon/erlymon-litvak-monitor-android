@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2016, Sergey Penkovsky <sergey.penkovsky@gmail.com>
+  ~
+  ~ This file is part of TraccarLitvakM (fork Erlymon Monitor).
+  ~
+  ~ TraccarLitvakM (fork Erlymon Monitor) is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ TraccarLitvakM (fork Erlymon Monitor) is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with TraccarLitvakM (fork Erlymon Monitor).  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <string name="appName">TraccarLitvakM</string>
+    <string name="serverConfigHost">DNS lub IP: PORT</string>
+    <string name="positionValid">Aktywny</string>
+    <string name="positionFixTime">Czas</string>
+    <string name="loginTitle">Zaloguj</string>
+    <string name="loginSubmit">Zaloguj</string>
+    <string name="positionLatitude">Szerokość</string>
+    <string name="positionLongitude">Długość</string>
+    <string name="sharedSave">Zapisz</string>
+    <string name="sharedLoading">Wczytywanie…</string>
+    <string name="deviceIdentifier">Identyfikator</string>
+    <string name="serverConfigUseSecure">Użyj SSL / TLS</string>
+    <string name="sharedRemove">Usuń</string>
+    <string name="sharedRemoveConfirm">Usuń obiekt?</string>
+    <string name="logoutSubmit">Wyloguj</string>
+    <string name="sharedWait">Czekaj …</string>
+    <string name="userName">Nazwa</string>
+    <string name="serverConfigUseNewProtocol">Za pomocą nowego protokołu</string>
+    <string name="mapTitle">Mapa</string>
+    <string name="positionCourse">Kurs</string>
+    <string name="positionAltitude">Wysokość</string>
+    <string name="settingsTitle">Ustawienia</string>
+    <string name="sharedBackPressed">Naciśnij ponownie, aby wyjść</string>
+    <string name="positionUnknown">Nieznany</string>
+
+    <string name="errorCreateSession">Access is denied</string>
+    <string name="errorCreateAccount">Failed to create user</string>
+    <string name="errorGetServer">Failed to download information about the server</string>
+    <string name="errorGetDevices">Failed to load the list of devices</string>
+    <string name="errorGetSession">Failed to load the session data</string>
+    <string name="errorUpdateAccount">Unable to update your user information</string>
+    <string name="errorCreateDevice">Failed to create item</string>
+    <string name="errorUpdateDevice">Failed to update item</string>
+    <string name="errorGetPositions">Could not load messages specified interval</string>
+    <string name="errorDeleteDevice">Unable to remove the item</string>
+    <string name="errorInvalidEmail">This email address is invalid</string>
+    <string name="errorInvalidPassword">This password is too short</string>
+    <string name="errorIncorrectPassword">This password is incorrect</string>
+    <string name="errorFieldRequired">This field is required</string>
+    <string name="errorPermissionRationale">Contacts permissions are needed for providing email completions.</string>
+<!--
+    <string name="errorCreateSession">Odmowa dostępu</string>
+    <string name="errorFieldRequired">Pole to jest konieczne</string>
+    <string name="errorInvalidEmail">Ten adres email jest nieprawidłowy</string>
+    <string name="errorIncorrectPassword">To hasło jest nieprawidłowe</string>
+    <string name="errorGetSession">Nie udało się załadować danych sesji</string>
+    <string name="errorGetServer">Nie udało się pobrać danych serwera</string>
+    <string name="errorGetPositions">Nie można załadować wiadomości określonym przedziale</string>
+    <string name="errorGetDevices">Nie udało się załadować listę urządzeń</string>
+    <string name="errorDeleteDevice">Nie można wyjąć urządzenie</string>
+    <string name="errorUpdateAccount">Nie udało się zaktualizować profil</string>
+    <string name="errorUpdateDevice">Nie można zaktualizować urządzenie</string>
+    <string name="errorCreateAccount">Nie udało się utworzyć profil</string>
+    <string name="errorCreateDevice">Nie udało się stworzyć urządzenie</string>
+    <string name="errorInvalidPassword">To hasło jest za krótkie</string>
+    <string name="errorPermissionRationale">Contacts permissions are needed for providing email completions.</string>
+-->
+    <string name="userPassword">Hasło</string>
+    <string name="sharedShowOnMapTItle">Pokaż na mapie</string>
+    <string name="serverConfigProtocolType">Typ protokołu</string>
+    <string name="settingsAccount">Profil</string>
+    <string name="registerTitle">Rejestracja</string>
+    <string name="registerSubmit">Rejestracja</string>
+    <string name="sharedRegistryNewAccount">Rejestracja nowego użytkownika jest zakończona powodzeniem</string>
+    <string name="sharedEdit">Edytuj</string>
+    <string name="serverConfigTitle">Serwer</string>
+    <string name="positionSpeed">Prędkość</string>
+    <string name="serverConfigsListTitle">Lista serwerów</string>
+    <string name="listTitle">Lista</string>
+    <string name="devicePositionsTitle">Komunikaty</string>
+    <string name="devicesTitle">urządzenia</string>
+    <string name="deviceTitle">urządzenie</string>
+    <string name="userEmail">Email</string>
+    <string name="positionsTitle">Pozycje</string>
+    <string name="configServerDns">DNS or IP:PORT</string>
+    <string name="commandFrequency">Częstotliwość</string>
+    <string name="sharedCommandResult">The command completed successfully</string>
+    <string name="sharedSendCommand">Send command</string>
+    <string name="commandTitle">Dowództwo</string>
+    <string name="commandUnit">Jednostka</string>
+    <string name="engineResume">Engine Resume</string>
+    <string name="engineStop">Engine Stop</string>
+    <string name="errorSendCommand">The command is not executed</string>
+    <string name="positionPeriodic">Periodic Reporting</string>
+    <string name="positionStop">Stop Reporting</string>
+    <string name="mapOsm">Open Street Map</string>
+    <string name="mapLayer">Mapa</string>
+    <string name="mapBingAerial">Bing Maps Aerial</string>
+    <string name="mapBingRoad">Bing Maps Road</string>
+    <string name="mapBingMapKey">Bing Maps Key</string>
+    <string name="mapCustom">Własna mapa</string>
+    <string name="serverZoom">Powiększenie</string>
+    <string name="serverRegistration">Rejestracja</string>
+    <string name="serverReadOnly">Readonly</string>
+    <string name="settingsDevices">urządzenia</string>
+    <string name="settingsDistanceUnit">Dystans</string>
+    <string name="settingsSpeedUnit">Prędkość</string>
+    <string name="settingsServer">Serwer</string>
+    <string name="settingsTwelveHourFormat">12-hour Format</string>
+    <string name="settingsUsers">Użytkownicy</string>
+    <string name="userAdmin">Administrator</string>
+    <string name="aboutTitle">About</string>
+    <string name="appLogo">TraccarLitvakM</string>
+    <string name="aboutWeb">For more information visit\nwww.erlymon.org/apps</string>
+    <string name="aboutLicense">This application is free and open source, source code is licensed under GNU General Public License, Version 3.0 and available on GitHub.</string>
+    <string name="aboutDescription">TraccarLitvakM (fork Erlymon Monitor) is an Android  application. It can work with Traccar Web UI Mod (Tracckar Litvak) open source server software.</string>
+    <string name="userTitle">User</string>
+    <string name="userLogin">Login</string>
+    <string name="positionAddress">Address</string>
+    <string name="positionOther">Other</string>
+</resources>

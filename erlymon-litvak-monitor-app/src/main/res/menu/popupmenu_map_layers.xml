@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2016, Sergey Penkovsky <sergey.penkovsky@gmail.com>
+  ~
+  ~ This file is part of TraccarLitvakM (fork Erlymon Monitor)
+  ~
+  ~ TraccarLitvakM (fork Erlymon Monitor) is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ TraccarLitvakM (fork Erlymon Monitor) is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with TraccarLitvakM (fork Erlymon Monitor).  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_layer_two_gis"
+        android:title="@string/two_gis"/>
+    <!--
+    <item
+        android:id="@+id/action_layer_navitel"
+        android:title="@string/navitel"/>
+    -->
+    <item
+        android:id="@+id/action_layer_osm"
+        android:title="@string/osm"/>
+    <item
+        android:id="@+id/action_layer_visicom"
+        android:title="@string/visicom"/>
+    <item
+        android:id="@+id/action_layer_wikimapia"
+        android:title="@string/wikimapia"/>
+    <item
+        android:id="@+id/action_layer_satellite"
+        android:title="@string/satellite"/>
+    <item
+        android:id="@+id/action_layer_open_cycle_map"
+        android:title="@string/open_cycle_map"/>
+    <item
+        android:id="@+id/action_layer_bgmountains_map"
+        android:title="@string/open_bgmountains_map"/>
+    <item
+        android:id="@+id/action_layer_bgtopo_map"
+        android:title="@string/open_bgtopo_map"/>
+    <item
+        android:id="@+id/action_layer_google_standart"
+        android:title="@string/google_standart"/>
+    <item
+        android:id="@+id/action_layer_google_satellite"
+        android:title="@string/google_satellite"/>
+    <item
+        android:id="@+id/action_layer_google_hybrid"
+        android:title="@string/google_hybrid"/>
+    <!--
+    <item
+        android:id="@+id/action_layer_hybrid"
+        android:title="@string/hybrid"/>
+    -->
+</menu>

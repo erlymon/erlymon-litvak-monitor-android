@@ -1,0 +1,143 @@
+<!--
+  ~ Copyright (c) 2016, Sergey Penkovsky <sergey.penkovsky@gmail.com>
+  ~
+  ~ This file is part of TraccarLitvakM (fork Erlymon Monitor).
+  ~
+  ~ TraccarLitvakM (fork Erlymon Monitor) is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ TraccarLitvakM (fork Erlymon Monitor) is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with TraccarLitvakM (fork Erlymon Monitor).  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <string name="appName">TraccarLitvakM</string>
+    <string name="appLogo">TraccarLitvakM</string>
+
+    <string name="settingsTitle">Settings</string>
+
+    <!-- Strings related to login -->
+    <string name="userPassword">Password</string>
+    <string name="loginSubmit">Sign in</string>
+    <string name="serverConfigHost">DNS or IP:PORT</string>
+    <string name="userName">Name</string>
+    <string name="userEmail">Email</string>
+    <string name="registerSubmit">Sign up</string>
+    <string name="logoutSubmit">Sign Out</string>
+    <string name="mapTitle">Map</string>
+    <string name="devicesTitle">Devices</string>
+    <string name="sharedSave">Save</string>
+    <string name="deviceTitle">Device</string>
+    <string name="settingsAccount">Account</string>
+    <string name="deviceIdentifier">Identifier</string>
+    <string name="loginTitle">Login</string>
+    <string name="registerTitle">Register</string>
+    <string name="sharedEdit">Edit</string>
+    <string name="sharedRemove">Remove</string>
+    <string name="listTitle">List</string>
+    <string name="devicePositionsTitle">Messages</string>
+    <string name="sharedShowOnMapTItle">Show on the map</string>
+
+    <string name="positionValid">Valid</string>
+    <string name="positionFixTime">Time</string>
+    <string name="positionLatitude">Latitude</string>
+    <string name="positionLongitude">Longitude</string>
+    <string name="positionAltitude">Altitude</string>
+    <string name="positionSpeed">Speed</string>
+    <string name="positionCourse">Course</string>
+    <string name="positionUnknown">Unknown</string>
+    <string name="sharedLoading">Loading</string>
+    <string name="sharedWait">Wait…</string>
+    <string name="sharedRemoveConfirm">Remove item?</string>
+    <string name="serverConfigsListTitle">Servers List</string>
+    <string name="serverConfigTitle">Server</string>
+    <string name="serverConfigUseNewProtocol">Use a new protocol</string>
+    <string name="serverConfigProtocolType">Protocol type</string>
+    <string name="serverConfigUseSecure">Use SSL/TLS</string>
+
+
+    <string name="sharedRegistryNewAccount">User registration is completed successfully</string>
+    <string name="sharedBackPressed">Press again to exit</string>
+
+    <string name="errorCreateSession">Access is denied</string>
+    <string name="errorCreateAccount">Failed to create user</string>
+    <string name="errorGetServer">Failed to download information about the server</string>
+    <string name="errorGetDevices">Failed to load the list of devices</string>
+    <string name="errorGetSession">Failed to load the session data</string>
+    <string name="errorUpdateAccount">Unable to update your user information</string>
+    <string name="errorCreateDevice">Failed to create item</string>
+    <string name="errorUpdateDevice">Failed to update item</string>
+    <string name="errorGetPositions">Could not load messages specified interval</string>
+    <string name="errorDeleteDevice">Unable to remove the item</string>
+    <string name="errorInvalidEmail">This emailOrLogin address is invalid</string>
+    <string name="errorInvalidPassword">This password is too short</string>
+    <string name="errorIncorrectPassword">This password is incorrect</string>
+    <string name="errorFieldRequired">This field is required</string>
+    <string name="errorPermissionRationale">Contacts permissions are needed for providing emailOrLogin completions.</string>
+
+    <string name="sharedDateTimeFormat" translatable="false">dd/MM/yyyy HH:mm:ss</string>
+
+    <string name="positionsTitle">Positions</string>
+    <string name="navigation_drawer_open" translatable="false">Open</string>
+    <string name="navigation_drawer_close" translatable="false">Close</string>
+    <string name="sharedSendCommand">Send command</string>
+    <string name="commandFrequency">Frequency</string>
+    <string name="commandUnit">Unit</string>
+    <string name="commandTitle">Command</string>
+
+    <string name="positionPeriodic">Periodic Reporting</string>
+    <string name="positionStop">Stop Reporting</string>
+    <string name="engineStop">Engine Stop</string>
+    <string name="engineResume">Engine Resume</string>
+    <string name="errorSendCommand">The command is not executed</string>
+    <string name="sharedCommandResult">The command completed successfully</string>
+    <string name="configServerDns">DNS or IP:PORT</string>
+    <string name="configServerSecure" translatable="false">Used Tls or Ssl</string>
+    <string name="userAdmin">Administrator</string>
+    <string name="mapLayer">Map layer</string>
+    <string name="settingsUsers">Users</string>
+    <string name="settingsServer">Server</string>
+    <string name="serverRegistration">Registration</string>
+    <string name="serverReadOnly">Readonly</string>
+    <string name="mapBingMapKey">Bing Map Key</string>
+    <string name="settingsDistanceUnit">Distance</string>
+    <string name="settingsSpeedUnit">Speed</string>
+    <string name="serverZoom">Zoom</string>
+    <string name="settingsTwelveHourFormat">12-hour Format</string>
+    <string name="mapOsm">Open Street Map</string>
+    <string name="mapBingRoad">Bing Maps Road</string>
+    <string name="mapBingAerial">Bing Maps Aerial</string>
+    <string name="mapCustom">Custom Map</string>
+    <string name="settingsDevices">Devices</string>
+
+    <string name="aboutDescription">TraccarLitvakM (fork Erlymon Monitor) is an Android  application. It can work with Traccar Web UI Mod (Tracckar Litvak) open source server software.</string>
+    <string name="aboutLicense">This application is free and open source, source code is licensed under GNU General Public License, Version 3.0 and available on GitHub.</string>
+    <string name="aboutWeb">For more information visit\nwww.erlymon.org/apps</string>
+    <string name="aboutTitle">About</string>
+    <string name="userTitle">User</string>
+    <string name="userLogin">Login</string>
+
+
+    <string name="osm" translatable="false">Open Street Map</string>
+    <string name="two_gis" translatable="false">2Gis</string>
+    <string name="visicom" translatable="false">Visicom</string>
+    <string name="wikimapia" translatable="false">Wikimapia</string>
+    <string name="satellite" translatable="false">Satellite</string>
+    <string name="hybrid" translatable="false">Hybrid</string>
+    <string name="google_standart" translatable="false">Google Standart</string>
+    <string name="google_satellite" translatable="false">Google Satellite</string>
+    <string name="google_hybrid" translatable="false">Google Hybrid</string>
+    <string name="open_cycle_map" translatable="false">Open Cycle Map</string>
+    <string name="open_bgmountains_map" translatable="false">BgMountains Map</string>
+    <string name="open_bgtopo_map" translatable="false">BgTopo Map</string>
+    <string name="unknown">Unknown</string>
+    <string name="positionAddress">Address</string>
+    <string name="positionOther">Other</string>
+</resources>
