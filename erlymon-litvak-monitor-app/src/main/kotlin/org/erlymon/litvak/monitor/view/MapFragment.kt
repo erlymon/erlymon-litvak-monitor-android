@@ -57,6 +57,7 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import io.realm.Realm
 
 /**
  * Created by Sergey Penkovsky <sergey.penkovsky@gmail.com> on 4/7/16.
@@ -68,6 +69,14 @@ class MapFragment : BaseFragment() {
         fun remove(marker: Marker) {
             mItems.remove(marker)
         }
+    }
+
+    private var listener: RealmChangeListener<Realm> = RealmChangeListener { realm ->
+        realm.where(Device::class.java).findAll().forEach { device ->
+            updateUnitMarker(device)
+        }
+        mRadiusMarkerClusterer?.invalidate()
+        mapview?.postInvalidate()
     }
 
     private val REQUEST_ACCESS_COARSE_LOCATION = 1
@@ -193,18 +202,11 @@ class MapFragment : BaseFragment() {
         mLocationOverlay?.disableMyLocation()
         mapview.getOverlays().add(mLocationOverlay)
 
-        storage.getDevices()?.addChangeListener{ res ->
-            logger.debug("CHangeListener Device: " + res.size)
-            res.forEach { device ->
-                updateUnitMarker(device)
-            }
-            mRadiusMarkerClusterer?.invalidate()
-            mapview?.postInvalidate()
-        }
+        storage.realm?.addChangeListener(listener)
     }
 
     override fun onPause() {
-        storage.getDevices()?.removeChangeListeners()
+        storage.realm?.removeChangeListener(listener)
         mapview.overlays.remove(mRadiusMarkerClusterer)
         markers.clear()
         super.onPause()
