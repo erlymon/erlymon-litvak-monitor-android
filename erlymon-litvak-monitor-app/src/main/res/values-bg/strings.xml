@@ -70,7 +70,7 @@
     <string name="serverConfigsListTitle">Список серверов</string>
     <string name="serverConfigTitle">Сервер</string>
     <string name="serverConfigUseNewProtocol">Использовать новый протокол</string>
-    <string name="sharedShowOnMapTItle">Покаже на картата</string>
+    <string name="sharedShowOnMapTItle">Покажи на картата</string>
     <string name="serverConfigUseSecure">Използване на SSL / TLS</string>
     <string name="serverConfigProtocolType">Протокол Type</string>
     <string name="userEmail">Email</string>
@@ -79,7 +79,7 @@
     <string name="configServerDns">DNS or IP:PORT</string>
     <string name="commandFrequency">Честота</string>
     <string name="sharedCommandResult">The command completed successfully</string>
-    <string name="sharedSendCommand">Send command</string>
+    <string name="sharedSendCommand">Изпарти команда</string>
     <string name="commandTitle">Команда</string>
     <string name="commandUnit">Мерна единица</string>
     <string name="engineResume">Engine Resume</string>

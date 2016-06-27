@@ -74,8 +74,8 @@
                         android:id="@+id/sign_in_login"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/userLogin"
-                        android:inputType="textEmailAddress"
+                        android:hint="@string/userName"
+                        android:inputType="text"
                         android:maxLines="1"
                         android:singleLine="true"/>
 
