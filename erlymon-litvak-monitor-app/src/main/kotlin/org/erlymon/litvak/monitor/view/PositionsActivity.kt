@@ -20,13 +20,11 @@ package org.erlymon.litvak.monitor.view
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.widget.DatePicker
-import android.widget.TabHost
-import android.widget.TimePicker
-import android.widget.Toast
+import android.widget.*
 
 import org.slf4j.LoggerFactory
 
@@ -41,17 +39,22 @@ import org.erlymon.litvak.monitor.R
 import org.erlymon.litvak.monitor.view.adapter.PositionsExpandableListAdapter
 import org.erlymon.litvak.monitor.view.fragment.DatePickerDialogFragment
 import org.erlymon.litvak.monitor.view.fragment.TimePickerDialogFragment
+import org.erlymon.litvak.monitor.view.map.layers.*
 import org.erlymon.litvak.monitor.view.widget.DrawableClickListener
 
 import org.osmdroid.bonuspack.overlays.Polyline
+import org.osmdroid.tileprovider.MapTileProviderBasic
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.BoundingBoxE6
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.TilesOverlay
 import java.util.*
 
 class PositionsActivity : BaseActivity<PositionsPresenter>(), PositionsView, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private var tag: String = ""
     private var pathOverlay: Polyline? = null
+    private var hybridTilesOverlay: TilesOverlay? = null
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will
@@ -129,6 +132,44 @@ class PositionsActivity : BaseActivity<PositionsPresenter>(), PositionsView, Dat
         mapview.isTilesScaledToDpi = true
         mapview.setMultiTouchControls(true)
         mapview.setLayerType(MapView.LAYER_TYPE_SOFTWARE, null)
+
+        // Add tiles layer with custom tile source
+        val tileSource = GoogleMapProvider("GoogleHybridProvider", GoogleMapProvider.HYBRID)
+        val tileProvider = MapTileProviderBasic(this@PositionsActivity)
+        tileProvider.tileSource = tileSource
+        hybridTilesOverlay = TilesOverlay(tileProvider, this@PositionsActivity)
+        hybridTilesOverlay?.setLoadingBackgroundColor(Color.TRANSPARENT)
+        hybridTilesOverlay?.isEnabled = false
+        mapview.getOverlays().add(hybridTilesOverlay)
+
+        mapLayers.setOnClickListener { view ->
+            val popupMenu = PopupMenu(this@PositionsActivity, view)
+            popupMenu.inflate(R.menu.popupmenu_map_layers) // Для Android 4.0
+            popupMenu.setOnMenuItemClickListener { item ->
+                hybridTilesOverlay?.isEnabled = false
+                when (item.itemId) {
+                    R.id.action_layer_two_gis -> mapview.getTileProvider().setTileSource(TwoGisProvider())
+                    R.id.action_layer_osm -> mapview.getTileProvider().setTileSource(TileSourceFactory.MAPNIK)
+                    R.id.action_layer_visicom -> mapview.getTileProvider().setTileSource(VisicomProvider())
+                    R.id.action_layer_wikimapia -> mapview.getTileProvider().setTileSource(WikimapiaProvider())
+                    R.id.action_layer_satellite -> mapview.getTileProvider().setTileSource(TileSourceFactory.MAPQUESTAERIAL)
+                    R.id.action_layer_open_cycle_map -> mapview.getTileProvider().setTileSource(OpenCycleMapProvider())
+                    R.id.action_layer_bgmountains_map -> mapview.getTileProvider().setTileSource(BGMountainsMapProvider())
+                    R.id.action_layer_bgtopo_map -> mapview.getTileProvider().setTileSource(BGtopoVJRasterMapProvider())
+                    R.id.action_layer_google_standart -> mapview.getTileProvider().setTileSource(GoogleMapProvider("GoogleMapStandart", GoogleMapProvider.STANDARD))
+                    R.id.action_layer_google_satellite -> mapview.getTileProvider().setTileSource(GoogleMapProvider("GoogleMapSatellite", GoogleMapProvider.SATELLITE))
+                    R.id.action_layer_google_hybrid -> {
+                        mapview.getTileProvider().setTileSource(GoogleMapProvider("GoogleMapSatellite", GoogleMapProvider.SATELLITE))
+                        hybridTilesOverlay?.isEnabled = true
+                    }
+                    else -> mapview.getTileProvider().setTileSource(TileSourceFactory.MAPNIK)
+                }
+
+                mapview.postInvalidate()
+                true
+            }
+            popupMenu.show()
+        }
 
         fab_load_positions.setOnClickListener{
             presenter?.onLoadPositionsButtonClick()

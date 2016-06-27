@@ -77,11 +77,24 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <org.osmdroid.views.MapView
-                        android:id="@+id/mapview"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1">
+                        <org.osmdroid.views.MapView
+                            android:id="@+id/mapview"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                        <ImageView
+                            android:id="@+id/mapLayers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:src="@drawable/ic_map_layers"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true" />
+                    </RelativeLayout>
                 </LinearLayout>
 
                 <LinearLayout
