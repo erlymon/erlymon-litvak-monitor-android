@@ -19,9 +19,11 @@
 package org.erlymon.litvak.monitor.view
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,6 +31,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import io.realm.RealmChangeListener
 
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer
@@ -50,6 +53,10 @@ import org.erlymon.litvak.monitor.view.map.marker.MarkerWithLabel
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.BoundingBoxE6
 import org.osmdroid.views.overlay.TilesOverlay
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
+
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
 
 /**
  * Created by Sergey Penkovsky <sergey.penkovsky@gmail.com> on 4/7/16.
@@ -63,9 +70,12 @@ class MapFragment : BaseFragment() {
         }
     }
 
+    private val REQUEST_ACCESS_COARSE_LOCATION = 1
+
     private var mRadiusMarkerClusterer: DevicesMarkerClusterer? = null
     private var hybridTilesOverlay: TilesOverlay? = null
     private var markers: MutableMap<Long, MarkerWithLabel> = HashMap()
+    private var mLocationOverlay: MyLocationNewOverlay? = null
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -130,6 +140,18 @@ class MapFragment : BaseFragment() {
             }
             popupMenu.show()
         }
+
+        myPlace.setOnClickListener {
+            if (mayRequestAccessCoarseLocation()) {
+                if (myPlace.isChecked) {
+                    mLocationOverlay?.enableFollowLocation()
+                    mLocationOverlay?.enableMyLocation()
+                } else {
+                    mLocationOverlay?.disableFollowLocation()
+                    mLocationOverlay?.disableMyLocation()
+                }
+            }
+        }
     }
 
     override fun onResume() {
@@ -165,6 +187,11 @@ class MapFragment : BaseFragment() {
         mRadiusMarkerClusterer = DevicesMarkerClusterer(context)
         mRadiusMarkerClusterer?.setIcon(BitmapFactory.decodeResource(resources, R.drawable.marker_cluster))
         mapview.overlays.add(mRadiusMarkerClusterer)
+
+        mLocationOverlay = MyLocationNewOverlay(activity, GpsMyLocationProvider(activity), mapview)
+        mLocationOverlay?.disableFollowLocation()
+        mLocationOverlay?.disableMyLocation()
+        mapview.getOverlays().add(mLocationOverlay)
 
         storage.getDevices()?.addChangeListener{ res ->
             logger.debug("CHangeListener Device: " + res.size)
@@ -235,6 +262,44 @@ class MapFragment : BaseFragment() {
             logger.warn(Log.getStackTraceString(e))
         }
 
+    }
+
+    private fun mayRequestAccessCoarseLocation(): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true
+        }
+        if (activity.checkSelfPermission(ACCESS_COARSE_LOCATION) === PackageManager.PERMISSION_GRANTED) {
+            return true
+        }
+        if (shouldShowRequestPermissionRationale(ACCESS_COARSE_LOCATION)) {
+            Toast.makeText(context, R.string.errorPermissionRationale, Toast.LENGTH_SHORT)
+            /*
+            Snackbar.make(mSignInEmailView, R.string.errorPermissionRationale, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(android.R.string.ok, new View.OnClickListener() {
+                        @Override
+                        @TargetApi(Build.VERSION_CODES.M)
+                        public void onClick(View v) {
+                            requestPermissions(new String[]{ACCESS_COARSE_LOCATION}, REQUEST_ACCESS_COARSE_LOCATION);
+                        }
+                    });
+            */
+        } else {
+            requestPermissions(arrayOf<String>(ACCESS_COARSE_LOCATION), REQUEST_ACCESS_COARSE_LOCATION)
+        }
+        return false
+    }
+
+    /**
+     * Callback received when a permissions request has been completed.
+     */
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
+                                   grantResults: IntArray) {
+        if (requestCode == REQUEST_ACCESS_COARSE_LOCATION) {
+            if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //populateAutoComplete();
+                logger.debug("onRequestPermissionsResult => REQUEST_ACCESS_COARSE_LOCATION")
+            }
+        }
     }
 
     companion object {
