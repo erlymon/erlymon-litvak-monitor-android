@@ -277,7 +277,7 @@ class MainActivity : BaseActivity<MainPresenter>(),
             (pagerAdapter?.getItem(0) as MapFragment).animateTo(GeoPoint(position?.latitude as Double, position?.longitude as Double), 15)
             view_pager.setCurrentItem(0)
             nav_view.setCheckedItem(R.id.nav_map)
-        } catch (e: NullPointerException) {
+        } catch (e: Exception) {
             logger.warn(Log.getStackTraceString(e))
         }
     }
