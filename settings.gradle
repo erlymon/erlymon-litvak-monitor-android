@@ -16,4 +16,4 @@
  * You should have received a copy of the GNU General Public License
  * along with TraccarLitvakM (fork Erlymon Monitor).  If not, see <http://www.gnu.org/licenses/>.
  */
-include ':OSMBonusPack', ':erlymon-litvak-core', ':erlymon-litvak-monitor-app'
+include ':erlymon-litvak-core', ':erlymon-litvak-monitor-app'

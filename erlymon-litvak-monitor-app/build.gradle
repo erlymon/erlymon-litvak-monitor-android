@@ -119,7 +119,7 @@ dependencies {
     compile 'com.chibatching:kotpref:1.2.0'
 
     // osmdroid
-    compile project(":OSMBonusPack")
+    compile 'com.github.MKergall:osmbonuspack:v5.8.1'
 
     // realm
     compile 'io.realm:android-adapters:1.2.1'

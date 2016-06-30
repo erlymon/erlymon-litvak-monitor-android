@@ -35,7 +35,6 @@ import android.widget.Toast
 import io.realm.RealmChangeListener
 
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer
-import org.osmdroid.bonuspack.overlays.Marker
 import org.osmdroid.util.GeoPoint
 import org.slf4j.LoggerFactory
 import java.util.*
@@ -53,11 +52,12 @@ import org.erlymon.litvak.monitor.view.map.marker.MarkerWithLabel
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.BoundingBoxE6
 import org.osmdroid.views.overlay.TilesOverlay
-import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
-import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import io.realm.Realm
+import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 /**
  * Created by Sergey Penkovsky <sergey.penkovsky@gmail.com> on 4/7/16.
@@ -197,7 +197,7 @@ class MapFragment : BaseFragment() {
         mRadiusMarkerClusterer?.setIcon(BitmapFactory.decodeResource(resources, R.drawable.marker_cluster))
         mapview.overlays.add(mRadiusMarkerClusterer)
 
-        mLocationOverlay = MyLocationNewOverlay(activity, GpsMyLocationProvider(activity), mapview)
+        mLocationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(activity), mapview)
         mLocationOverlay?.disableFollowLocation()
         mLocationOverlay?.disableMyLocation()
         mapview.getOverlays().add(mLocationOverlay)

@@ -42,12 +42,12 @@ import org.erlymon.litvak.monitor.view.fragment.TimePickerDialogFragment
 import org.erlymon.litvak.monitor.view.map.layers.*
 import org.erlymon.litvak.monitor.view.widget.DrawableClickListener
 
-import org.osmdroid.bonuspack.overlays.Polyline
 import org.osmdroid.tileprovider.MapTileProviderBasic
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.BoundingBoxE6
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.TilesOverlay
 import java.util.*
 

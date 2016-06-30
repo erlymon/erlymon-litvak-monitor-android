@@ -25,8 +25,8 @@ import android.graphics.Paint;
 import android.graphics.Point;
 
 import org.erlymon.litvak.monitor.view.Utils;
-import org.osmdroid.bonuspack.overlays.Marker;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 
 /**
  * Created by sergey on 6/25/16.
