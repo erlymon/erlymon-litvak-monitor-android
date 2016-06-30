@@ -43,7 +43,7 @@
             <item
                 android:id="@+id/nav_sign_out"
                 android:icon="@drawable/ic_exit"
-                android:title="@string/loginSubmit" />
+                android:title="@string/logoutSubmit" />
         </menu>
     </item>
 </menu>
