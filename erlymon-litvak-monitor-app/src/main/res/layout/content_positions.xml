@@ -93,7 +93,8 @@
                             android:src="@drawable/ic_map_layers"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentRight="true"
-                            android:layout_alignParentEnd="true" />
+                            android:layout_alignParentEnd="true"
+                            android:visibility="gone"/>
                     </RelativeLayout>
                 </LinearLayout>
 

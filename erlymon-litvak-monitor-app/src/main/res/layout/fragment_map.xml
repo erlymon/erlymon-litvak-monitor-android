@@ -41,7 +41,8 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:src="@drawable/ic_map_layers"
-            android:contentDescription="@string/unknown" />
+            android:contentDescription="@string/unknown"
+            android:visibility="gone"/>
         <CheckBox
             android:id="@+id/myPlace"
             android:layout_width="wrap_content"
