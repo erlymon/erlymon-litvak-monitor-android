@@ -1,10 +1,10 @@
-# [TraccarLitvakM (fork Erlymon Monitor) for Android](https://www.erlymon.org/client)
+# [TraccarLitvakM (fork Erlymon Monitor) for Android](https://www.erlymon.org/apps)
 
 [![](https://play.google.com/intl/en_us/badges/images/badge_new.png)](https://play.google.com/store/apps/details?id=org.erlymon.monitor)
 
 ## Contacts
 
-Author - Sergey Penkovsky ([sergey.penkovsky@gmail.com](mailto:sergey.penkovsky@gmail.com))
+Author - Sergey Penkovsky ([dev@erlymon.org](mailto:dev@erlymon.org))
 
 Website - [https://www.erlymon.org/apps](https://www.erlymon.org/apps)
 
