@@ -54,5 +54,5 @@ public interface Model {
 
     Observable<Void> updateUser(User user);
 
-    Observable<JsonObject> createCommand(Command command);
+    Observable<Void> createCommand(Command command);
 }

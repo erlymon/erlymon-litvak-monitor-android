@@ -111,7 +111,7 @@ public class MainPresenterImpl implements MainPresenter {
         }
 
         subscription = model.createCommand(view.getCommand())
-                .subscribe(new Observer<JsonObject>() {
+                .subscribe(new Observer<Void>() {
                     @Override
                     public void onCompleted() {
 
@@ -124,7 +124,7 @@ public class MainPresenterImpl implements MainPresenter {
                     }
 
                     @Override
-                    public void onNext(JsonObject data) {
+                    public void onNext(Void data) {
                         view.showRemoveDeviceCompleted();
                     }
                 });

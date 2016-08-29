@@ -25,6 +25,7 @@ import com.google.gson.JsonObject;
 import org.erlymon.litvak.core.model.api.ApiModule;
 import org.erlymon.litvak.core.model.api.util.QueryDate;
 import org.erlymon.litvak.core.model.data.Command;
+import org.erlymon.litvak.core.model.data.CommandResult;
 import org.erlymon.litvak.core.model.data.Device;
 import org.erlymon.litvak.core.model.data.Position;
 import org.erlymon.litvak.core.model.data.User;
@@ -33,6 +34,7 @@ import java.util.Date;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -115,10 +117,19 @@ public class ModelImpl implements Model {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+
     @Override
-    public Observable<JsonObject> createCommand(Command command) {
-        return apiModule.getApi().sendCommand(command)
+    public Observable<Void> createCommand(Command command) {
+        return apiModule.getApi().sendCommand(new Object[] {command})
                 .subscribeOn(Schedulers.io())
+                .flatMap((Func1<String, Observable<Void>>) value -> {
+                    CommandResult res = ApiModule.getInstance().getGson().fromJson(value, CommandResult.class);
+                    if (res.isSuccess()) {
+                        return Observable.just(null);
+                    } else {
+                        throw new RuntimeException(res.getReason());
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread());
     }
 }

@@ -66,8 +66,20 @@ public interface ApiInterface {
     @POST("updateUser")
     Observable<Void> updateUser(@Body User[] params);
 
-    // {"deviceId":10995,"type":"engineResume","id":-1}
-    // {"deviceId":10995,"type":"positionPeriodic","id":-1,"attributes":{"frequency":1}}
+    /*
+    --> POST http://64.137.174.107/traccar/rest/sendCommand http/1.1
+    Content-Type: application/json; charset=UTF-8
+    Content-Length: 57
+    [
+      {
+        "deviceId": 2,
+        "type": "engineResume"
+      }
+    ]
+    Answer:
+    "{\"reason\":\"java.lang.RuntimeException: Command engineResume is not supported in protocol hunterpro\",\"success\":false}"
+     */
+
     @POST("sendCommand")
-    Observable<JsonObject> sendCommand(@Body Command command);
+    Observable<String> sendCommand(@Body Object[] params);
 }
