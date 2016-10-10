@@ -63,7 +63,7 @@ android {
     }
 
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         applicationId "org.erlymon.litvak.monitor"
@@ -101,8 +101,8 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:design:24.0.0'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:design:24.2.1'
 
     compile 'com.android.support:multidex:1.0.1'
 
@@ -128,27 +128,6 @@ dependencies {
     compile project(":erlymon-litvak-core")
 }
 
-buildscript {
-    ext.kotlin_version = '1.0.2-eap-15'
-
-    repositories {
-        jcenter()
-        mavenCentral()
-        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
-
-    }
-}
-
-repositories {
-    jcenter()
-    mavenCentral()
-    maven { url "https://jitpack.io" }
-    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
-}
 /*
 task requestPasswords << {
     android.signingConfigs.release.storePassword = new String(System.console().readPassword('\nStore password: '))
