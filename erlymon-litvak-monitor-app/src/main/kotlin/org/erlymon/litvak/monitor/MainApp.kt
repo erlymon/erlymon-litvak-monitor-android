@@ -29,6 +29,8 @@ import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.FileAppender
 import com.chibatching.kotpref.Kotpref
 import com.facebook.stetho.Stetho
+import io.realm.Realm
+import io.realm.RealmConfiguration
 import org.erlymon.litvak.core.model.api.ApiModule
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -44,6 +46,13 @@ class MainApp : MultiDexApplication() {
         initLoggerSystem()
         Stetho.initializeWithDefaults(this);
         Kotpref.init(baseContext)
+
+        Realm.setDefaultConfiguration(RealmConfiguration.Builder(baseContext)
+                .deleteRealmIfMigrationNeeded()
+                .name("erlymon-litvak-monitor-storage.realm")
+                .build()
+        )
+
         ApiModule.getInstance().init(applicationContext, MainPref.dns, MainPref.sslOrTls)
     }
 
