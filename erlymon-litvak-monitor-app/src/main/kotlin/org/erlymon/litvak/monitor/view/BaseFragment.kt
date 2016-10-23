@@ -18,36 +18,25 @@
  */
 package org.erlymon.litvak.monitor.view
 
-import android.content.Context
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.view.View
 
-import org.erlymon.litvak.core.model.data.Storage
+import org.erlymon.litvak.core.presenter.Presenter
 
 
 /**
  * Created by Sergey Penkovsky <sergey.penkovsky@gmail.com> on 1/7/16.
  */
-open class BaseFragment : Fragment() {
+open class BaseFragment<P : Presenter> : Fragment() {
+    protected var presenter: P? = null
 
-    interface ServiceInterface {
-        val storage: Storage?
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter?.onStop()
     }
 
-    private var serviceInterface: ServiceInterface? = null
-    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        // Verify that the host activity implements the callback interface
-
-        try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
-            serviceInterface = context as ServiceInterface?
-        } catch (e: ClassCastException) {
-            // The activity doesn't implement the interface, throw exception
-            throw ClassCastException(context!!.toString() + " must implement StorageInterface")
-        }
-
+    protected fun makeToast(view: View, text: String) {
+        Snackbar.make(view, text, Snackbar.LENGTH_LONG).show()
     }
-
-    protected val storage: Storage get() = serviceInterface!!.storage!!
 }

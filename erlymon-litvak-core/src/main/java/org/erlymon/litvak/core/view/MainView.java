@@ -27,10 +27,10 @@ import org.erlymon.litvak.core.model.data.Position;
  * Created by Sergey Penkovsky <sergey.penkovsky@gmail.com> on 5/4/16.
  */
 public interface MainView extends View {
-    void showDevices(Device[] devices);
-    void showLastPositions(Position[] positions);
     void showCompleted();
     void showRemoveDeviceCompleted();
-    Device getDevice();
+    void showCommandCompleted();
+    void showPosition(Position position);
+    long getDeviceId();
     Command getCommand();
 }

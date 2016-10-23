@@ -26,18 +26,21 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import io.realm.RealmResults
 import org.slf4j.LoggerFactory
 
 import kotlinx.android.synthetic.main.fragment_devices.*
 import org.erlymon.litvak.core.model.data.Device
+import org.erlymon.litvak.core.presenter.DevicesListPresenter
+import org.erlymon.litvak.core.presenter.DevicesListPresenterImpl
+import org.erlymon.litvak.core.view.DevicesListView
 import org.erlymon.litvak.monitor.R
 import org.erlymon.litvak.monitor.view.adapter.DevicesAdapter
 
 /**
  * Created by Sergey Penkovsky <sergey.penkovsky@gmail.com> on 4/7/16.
  */
-class DevicesFragment : BaseFragment() {
-
+class DevicesFragment : BaseFragment<DevicesListPresenter>(), DevicesListView {
     interface OnActionDeviceListener {
         fun onEditDevice(device: Device)
         fun onRemoveDevice(device: Device)
@@ -73,7 +76,9 @@ class DevicesFragment : BaseFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lv_devices.adapter = DevicesAdapter(context, storage.devicesSorted)
+        presenter = DevicesListPresenterImpl(context, this)
+
+        //lv_devices.adapter = DevicesAdapter(context, storage.devicesSorted)
         lv_devices.onItemClickListener = object : AdapterView.OnItemClickListener {
             override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val device = lv_devices.getItemAtPosition(position) as Device
@@ -83,6 +88,20 @@ class DevicesFragment : BaseFragment() {
                 popupMenu.show()
             }
         }
+        presenter?.onStart()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+    }
+
+    override fun showData(data: RealmResults<Device>) {
+        lv_devices.adapter = DevicesAdapter(context, data)
+    }
+
+    override fun showError(error: String) {
+        makeToast(lv_devices, error)
     }
 
     private inner class OnExecPopupMenuItem(internal var device: Device) : PopupMenu.OnMenuItemClickListener {

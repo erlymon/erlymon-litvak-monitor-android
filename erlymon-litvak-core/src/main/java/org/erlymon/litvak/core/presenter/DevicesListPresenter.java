@@ -19,11 +19,8 @@
 package org.erlymon.litvak.core.presenter;
 
 /**
- * Created by Sergey Penkovsky <sergey.penkovsky@gmail.com> on 5/4/16.
+ * Created by Sergey Penkovsky <sergey.penkovsky@gmail.com> on 10/25/16.
  */
-public interface MainPresenter extends Presenter {
-    void onDeleteSessionButtonClick();
-    void onDeleteDeviceButtonClick();
-    void onSendCommandButtonClick();
-    void onGetPostionByCache();
+public interface DevicesListPresenter extends Presenter {
+    void onStart();
 }

@@ -55,6 +55,10 @@ import org.osmdroid.views.overlay.TilesOverlay
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import io.realm.Realm
+import org.erlymon.litvak.core.model.data.Position
+import org.erlymon.litvak.core.presenter.MapPresenter
+import org.erlymon.litvak.core.presenter.MapPresenterImpl
+import org.erlymon.litvak.core.view.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
@@ -62,7 +66,99 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 /**
  * Created by Sergey Penkovsky <sergey.penkovsky@gmail.com> on 4/7/16.
  */
-class MapFragment : BaseFragment() {
+class MapFragment : BaseFragment<MapPresenter>(), MapView {
+
+    private inner class DevicesMarkerClusterer(ctx: Context) : RadiusMarkerClusterer(ctx) {
+
+        fun remove(marker: Marker) {
+            mItems.remove(marker)
+        }
+    }
+
+    private var mRadiusMarkerClusterer: DevicesMarkerClusterer? = null
+    private var markers: MutableMap<Long, MarkerWithLabel> = HashMap()
+
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        // Inflate the layout for this fragment
+        return inflater!!.inflate(R.layout.fragment_map, container, false)
+    }
+
+    private var arrowDrawable: Drawable? = null
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        presenter = MapPresenterImpl(context, this)
+
+        arrowDrawable = resources.getDrawable(R.drawable.ic_arrow)
+
+        mapview.isTilesScaledToDpi = true
+        mapview.setMultiTouchControls(true)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        mRadiusMarkerClusterer = DevicesMarkerClusterer(context)
+        mRadiusMarkerClusterer?.setIcon(BitmapFactory.decodeResource(resources, R.drawable.marker_cluster))
+        mapview.overlays.add(mRadiusMarkerClusterer)
+        presenter?.onStart()
+    }
+
+    override fun onPause() {
+        mapview.overlays.remove(mRadiusMarkerClusterer)
+        markers.clear()
+        super.onPause()
+    }
+
+    fun animateTo(geoPoint: GeoPoint, zoom: Int) {
+        mapview.controller.setZoom(zoom)
+        mapview.controller.animateTo(geoPoint)
+        mapview.postInvalidate()
+    }
+
+    fun updateUnitMarker(device: Device, position: Position) {
+        try {
+            logger.debug("UPDATE MARKER: " + device)
+            var marker: MarkerWithLabel? = markers[device.id]
+            if (marker == null) {
+                marker = MarkerWithLabel(mapview, device.name)
+                mRadiusMarkerClusterer?.add(marker)
+                markers.put(device.id, marker)
+
+            }
+            marker.title = device.name
+            marker.snippet = position.fixTime.toString()
+
+            marker.setIcon(arrowDrawable)
+            if (position.course != null) {
+                marker.rotation = position.course
+            }
+            marker.position = GeoPoint(position.latitude, position.longitude)
+        } catch (e: Exception) {
+            logger.warn(Log.getStackTraceString(e))
+        }
+    }
+
+    override fun showLastPositions(positions: Array<out Position>) {
+        positions.forEach { position ->
+            updateUnitMarker(position.device, position)
+        }
+        mRadiusMarkerClusterer?.invalidate()
+        mapview?.postInvalidate()
+    }
+
+    override fun showError(error: String) {
+        makeToast(mapview, error)
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(MapFragment::class.java)
+    }
+}
+/*
+class MapFragment : BaseFragment<MapPresenter>(), MapView {
 
     private inner class DevicesMarkerClusterer(ctx: Context) : RadiusMarkerClusterer(ctx) {
 
@@ -304,7 +400,16 @@ class MapFragment : BaseFragment() {
         }
     }
 
+    override fun showError(error: String) {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showLastPositions(positions: Array<out Position>) {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     companion object {
         private val logger = LoggerFactory.getLogger(MapFragment::class.java)
     }
 }
+*/

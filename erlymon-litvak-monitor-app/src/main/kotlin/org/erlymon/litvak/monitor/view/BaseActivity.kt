@@ -28,25 +28,15 @@ import org.erlymon.litvak.core.presenter.Presenter
 /**
  * Created by Sergey Penkovsky <sergey.penkovsky@gmail.com> on 5/12/16.
  */
-open class BaseActivity<P : Presenter> : AppCompatActivity(), BaseFragment.ServiceInterface {
-    override var storage: Storage? = null
+open class BaseActivity<P : Presenter> : AppCompatActivity() {
     protected var presenter: P? = null
 
     override fun onCreate(savedInstanceState :Bundle?) {
         super.onCreate(savedInstanceState)
-        storage = Storage(this@BaseActivity, "erlymon-monitor-storage.realm")
-        storage?.open()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if (presenter != null) {
-            presenter!!.onStop()
-        }
     }
 
     override fun onDestroy() {
-        storage?.close()
+        presenter?.onStop()
         super.onDestroy()
     }
 

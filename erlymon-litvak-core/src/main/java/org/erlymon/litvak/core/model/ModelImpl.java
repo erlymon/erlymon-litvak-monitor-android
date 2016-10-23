@@ -49,16 +49,12 @@ public class ModelImpl implements Model {
 
     @Override
     public Observable<User> createSession(String login, String password) {
-        return apiModule.getApi().createSession(new String[] {login, password})
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return apiModule.getApi().createSession(new String[] {login, password});
     }
 
     @Override
     public Observable<Boolean> deleteSession() {
-        return apiModule.getApi().deleteSession()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return apiModule.getApi().deleteSession();
     }
 
     @Override
@@ -70,37 +66,27 @@ public class ModelImpl implements Model {
 
     @Override
     public Observable<Void> updateUser(User user) {
-        return apiModule.getApi().updateUser(new User[] {user})
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return apiModule.getApi().updateUser(new User[] {user});
     }
 
     @Override
     public Observable<Device[]> getDevices() {
-        return apiModule.getApi().getDevices()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return apiModule.getApi().getDevices();
     }
 
     @Override
     public Observable<Device> createDevice(Device device) {
-        return apiModule.getApi().createDevice(new Device[] {device})
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return apiModule.getApi().createDevice(new Device[] {device});
     }
 
     @Override
     public Observable<Device> updateDevice(Device device) {
-        return apiModule.getApi().updateDevice(new Device[] {device})
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return apiModule.getApi().updateDevice(new Device[] {device});
     }
 
     @Override
     public Observable<Device> deleteDevice(Device device) {
-        return apiModule.getApi().deleteDevice(new Device[] {device})
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return apiModule.getApi().deleteDevice(new Device[] {device});
     }
 
     @Override

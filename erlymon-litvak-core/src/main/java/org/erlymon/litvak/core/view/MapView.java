@@ -16,14 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with TraccarLitvakM (fork Erlymon Monitor).  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.erlymon.litvak.core.presenter;
+package org.erlymon.litvak.core.view;
+
+
+import org.erlymon.litvak.core.model.data.Command;
+import org.erlymon.litvak.core.model.data.Device;
+import org.erlymon.litvak.core.model.data.Position;
 
 /**
  * Created by Sergey Penkovsky <sergey.penkovsky@gmail.com> on 5/4/16.
  */
-public interface MainPresenter extends Presenter {
-    void onDeleteSessionButtonClick();
-    void onDeleteDeviceButtonClick();
-    void onSendCommandButtonClick();
-    void onGetPostionByCache();
+public interface MapView extends View {
+    void showLastPositions(Position[] positions);
 }

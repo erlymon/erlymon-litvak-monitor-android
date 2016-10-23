@@ -16,14 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with TraccarLitvakM (fork Erlymon Monitor).  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.erlymon.litvak.core.presenter;
+package org.erlymon.litvak.core.view;
+
+import org.erlymon.litvak.core.model.data.Device;
+
+import io.realm.RealmResults;
 
 /**
- * Created by Sergey Penkovsky <sergey.penkovsky@gmail.com> on 5/4/16.
+ * Created by Sergey Penkovsky <sergey.penkovsky@gmail.com> on 10/25/16.
  */
-public interface MainPresenter extends Presenter {
-    void onDeleteSessionButtonClick();
-    void onDeleteDeviceButtonClick();
-    void onSendCommandButtonClick();
-    void onGetPostionByCache();
+public interface DevicesListView extends View {
+    void showData(RealmResults<Device> data);
 }

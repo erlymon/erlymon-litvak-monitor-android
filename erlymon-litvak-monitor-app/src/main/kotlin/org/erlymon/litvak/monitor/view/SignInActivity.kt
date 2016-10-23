@@ -90,7 +90,6 @@ class SignInActivity : BaseActivity<SignInPresenter>(), SignInView, SettingsDial
     }
 
     override fun onChangeServerConfig(dns: String, sslOrTls: Boolean) {
-        storage?.deleteAll()
         MainPref.dns = dns
         MainPref.sslOrTls = sslOrTls
         ApiModule.getInstance().init(applicationContext, MainPref.dns, MainPref.sslOrTls)
@@ -118,12 +117,9 @@ class SignInActivity : BaseActivity<SignInPresenter>(), SignInView, SettingsDial
 
         MainPref.login = sign_in_login.text.toString()
         MainPref.password = sign_in_password.text.toString()
-        // write data to storage
-        //storage?.createOrUpdateServer(data?.first)
-        storage?.createOrUpdateUser(user)
 
         val intent = Intent(this@SignInActivity, MainActivity::class.java)
-                .putExtra("server", storage?.firstServer)
+                //.putExtra("server", storage?.firstServer)
                 .putExtra("session", user)
         startActivity(intent)
     }

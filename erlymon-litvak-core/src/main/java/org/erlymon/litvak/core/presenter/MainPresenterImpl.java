@@ -32,8 +32,16 @@ import org.erlymon.litvak.core.view.MainView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+
+import io.realm.Realm;
+import io.realm.RealmObject;
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
 /**
@@ -42,6 +50,7 @@ import rx.subscriptions.Subscriptions;
 public class MainPresenterImpl implements MainPresenter {
     private static final Logger logger = LoggerFactory.getLogger(MainPresenterImpl.class);
     private Model model;
+    private Realm realmdb;
 
     private MainView view;
     private Subscription subscription = Subscriptions.empty();
@@ -49,6 +58,7 @@ public class MainPresenterImpl implements MainPresenter {
     public MainPresenterImpl(Context context, MainView view) {
         this.view = view;
         this.model = new ModelImpl(context);
+        this.realmdb = Realm.getDefaultInstance();
     }
 
     @Override
@@ -59,6 +69,9 @@ public class MainPresenterImpl implements MainPresenter {
         }
 
         subscription = model.deleteSession()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(o -> realmdb.executeTransaction(realm -> realm.deleteAll()))
                 .subscribe(new Observer<Boolean>() {
                     @Override
                     public void onCompleted() {
@@ -84,7 +97,18 @@ public class MainPresenterImpl implements MainPresenter {
             subscription.unsubscribe();
         }
 
-        subscription = model.deleteDevice(view.getDevice())
+        Device device = new Device();
+        device.setId(view.getDeviceId());
+        subscription = model.deleteDevice(device)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(o -> realmdb.executeTransaction(realm -> {
+                    try {
+                        realm.where(Device.class).equalTo("id", view.getDeviceId()).findFirst().deleteFromRealm();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }))
                 .subscribe(new Observer<Device>() {
                     @Override
                     public void onCompleted() {
@@ -111,6 +135,8 @@ public class MainPresenterImpl implements MainPresenter {
         }
 
         subscription = model.createCommand(view.getCommand())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Void>() {
                     @Override
                     public void onCompleted() {
@@ -125,70 +151,57 @@ public class MainPresenterImpl implements MainPresenter {
 
                     @Override
                     public void onNext(Void data) {
-                        view.showRemoveDeviceCompleted();
+                        view.showCommandCompleted();
                     }
                 });
     }
 
     @Override
-    public void onLoadDevices() {
-        if (!subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
+    public void onGetPostionByCache() {
+        try {
+            if (!subscription.isUnsubscribed()) {
+                subscription.unsubscribe();
+            }
+
+            subscription = realmdb.where(Position.class)
+                    .equalTo("device.id", view.getDeviceId())
+                    .findFirst()
+                    .asObservable()
+                    .flatMap((Func1<RealmObject, Observable<Position>>) realmObject -> realmObject.asObservable())
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Position>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            logger.error(Log.getStackTraceString(e));
+                            view.showError(e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(Position data) {
+                            logger.debug(data.toString());
+                            view.showPosition(data);
+                        }
+                    });
+        } catch (NullPointerException e) {
+            logger.error(Log.getStackTraceString(e));
+            view.showError(e.getMessage());
         }
-
-        subscription = model.getDevices()
-                .subscribe(new Observer<Device[]>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        logger.error(Log.getStackTraceString(e));
-                        view.showError(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(Device[] data) {
-                        logger.debug(data.toString());
-                        view.showDevices(data);
-                    }
-                });
     }
-
-    @Override
-    public void onLoadLastPositions() {
-        if (!subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-        }
-
-        subscription = model.getLatestPositions()
-                .subscribe(new Observer<Position[]>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        logger.error(Log.getStackTraceString(e));
-                        view.showError(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(Position[] data) {
-                        logger.debug(data.toString());
-                        view.showLastPositions(data);
-                    }
-                });
-    }
-
 
     @Override
     public void onStop() {
         if (!subscription.isUnsubscribed()) {
             subscription.unsubscribe();
+        }
+
+        if (!realmdb.isClosed()) {
+            realmdb.close();
         }
     }
 }

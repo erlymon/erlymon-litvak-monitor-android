@@ -18,64 +18,50 @@
  */
 package org.erlymon.litvak.core.presenter;
 
-
 import android.content.Context;
-import android.support.v4.util.Pair;
 import android.util.Log;
 
 import org.erlymon.litvak.core.model.Model;
 import org.erlymon.litvak.core.model.ModelImpl;
 import org.erlymon.litvak.core.model.data.Device;
-import org.erlymon.litvak.core.model.data.User;
-import org.erlymon.litvak.core.view.SignInView;
+import org.erlymon.litvak.core.view.DevicesListView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-
 import io.realm.Realm;
-import rx.Observable;
+import io.realm.RealmResults;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
 /**
- * Created by Sergey Penkovsky <sergey.penkovsky@gmail.com> on 5/4/16.
+ * Created by Sergey Penkovsky <sergey.penkovsky@gmail.com> on 10/25/16.
  */
-public class SignInPresenterImpl implements SignInPresenter {
-    private static final Logger logger = LoggerFactory.getLogger(SignInPresenterImpl.class);
+public class DevicesListPresenterImpl implements DevicesListPresenter {
+    private static final Logger logger = LoggerFactory.getLogger(DevicesListPresenterImpl.class);
     private Model model;
     private Realm realmdb;
 
-    private SignInView view;
+    private DevicesListView view;
     private Subscription subscription = Subscriptions.empty();
 
-
-    public SignInPresenterImpl(Context context, SignInView view) {
+    public DevicesListPresenterImpl(Context context, DevicesListView view) {
         this.view = view;
         this.model = new ModelImpl(context);
         this.realmdb = Realm.getDefaultInstance();
     }
 
     @Override
-    public void onSignInButtonClick() {
-
+    public void onStart() {
         if (!subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }
 
-        subscription = model.createSession(view.getLogin(), view.getPassword())
-                .subscribeOn(Schedulers.io())
-                .flatMap(user -> model.getDevices().flatMap(devices -> Observable.just(new Pair<>(user, devices))))
+        subscription = realmdb.where(Device.class).findAllSortedAsync("name").asObservable()
+                .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(result -> realmdb.executeTransaction(realm -> {
-                    realm.copyToRealmOrUpdate(result.first);
-                    realm.copyToRealmOrUpdate(Arrays.asList(result.second));
-                }))
-                .subscribe(new Observer<Pair<User,Device[]>>() {
+                .subscribe(new Observer<RealmResults<Device>>() {
                     @Override
                     public void onCompleted() {
 
@@ -88,8 +74,9 @@ public class SignInPresenterImpl implements SignInPresenter {
                     }
 
                     @Override
-                    public void onNext(Pair<User,Device[]> result) {
-                        view.showData(result.first);
+                    public void onNext(RealmResults<Device> data) {
+                        logger.debug(data.toString());
+                        view.showData(data);
                     }
                 });
     }

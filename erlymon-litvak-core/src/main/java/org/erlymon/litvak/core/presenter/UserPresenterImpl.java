@@ -29,8 +29,11 @@ import org.erlymon.litvak.core.view.UserView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.realm.Realm;
 import rx.Observer;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
 /**
@@ -39,6 +42,7 @@ import rx.subscriptions.Subscriptions;
 public class UserPresenterImpl implements UserPresenter {
     private static final Logger logger = LoggerFactory.getLogger(UserPresenterImpl.class);
     private Model model;
+    private Realm realmdb;
 
     private UserView view;
     private Subscription subscription = Subscriptions.empty();
@@ -46,6 +50,7 @@ public class UserPresenterImpl implements UserPresenter {
     public UserPresenterImpl(Context context, UserView view) {
         this.view = view;
         this.model = new ModelImpl(context);
+        this.realmdb = Realm.getDefaultInstance();
     }
 
     @Override
@@ -57,6 +62,9 @@ public class UserPresenterImpl implements UserPresenter {
 
         if (view.getUser().getId() == 0) {
             subscription = model.register(view.getUser())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnNext(user -> realmdb.executeTransactionAsync(realm -> realm.copyToRealmOrUpdate(user)))
                     .subscribe(new Observer<User>() {
                         @Override
                         public void onCompleted() {
@@ -76,6 +84,9 @@ public class UserPresenterImpl implements UserPresenter {
                     });
         } else {
             subscription = model.updateUser(view.getUser())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnNext(user -> realmdb.executeTransactionAsync(realm -> realm.copyToRealmOrUpdate(view.getUser())))
                     .subscribe(new Observer<Void>() {
                         @Override
                         public void onCompleted() {
@@ -100,6 +111,10 @@ public class UserPresenterImpl implements UserPresenter {
     public void onStop() {
         if (!subscription.isUnsubscribed()) {
             subscription.unsubscribe();
+        }
+
+        if (!realmdb.isClosed()) {
+            realmdb.close();
         }
     }
 }

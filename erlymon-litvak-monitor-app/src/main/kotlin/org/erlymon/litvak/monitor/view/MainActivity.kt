@@ -47,7 +47,6 @@ import org.osmdroid.util.GeoPoint
 import org.slf4j.LoggerFactory
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
-import java.util.concurrent.TimeUnit
 
 class MainActivity : BaseActivity<MainPresenter>(),
         MainView,
@@ -55,11 +54,12 @@ class MainActivity : BaseActivity<MainPresenter>(),
         DevicesFragment.OnActionDeviceListener,
         ConfirmDialogFragment.ConfirmDialogListener,
         SendCommandDialogFragment.SendCommandDialogListener {
+
     private var service: ScheduledExecutorService? = null;
     private var pagerAdapter: CustomFragmentPagerAdapter? = null
 
     private var mAccountNameView: TextView? = null
-    private var deviceId: Long = 0
+    //private var deviceId: Long = 0
     private var command: Command? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -128,8 +128,6 @@ class MainActivity : BaseActivity<MainPresenter>(),
                 }
             }
         }
-
-        presenter?.onLoadDevices()
     }
 
     override fun onDestroy() {
@@ -151,43 +149,36 @@ class MainActivity : BaseActivity<MainPresenter>(),
         }
     }
 
-    override fun showDevices(devices: Array<Device>) {
-        logger.debug("showDevices => " + devices.size)
-        storage?.createOrUpdateDevices(devices)
-        presenter?.onLoadLastPositions()
-    }
-
-    override fun showLastPositions(positions: Array<out Position>) {
-        logger.debug("showLastPositions => " + positions.size)
-        storage?.createOrUpdatePositions(positions)
-
-        positions.forEach { it ->
-            storage?.createOrUpdateDevice(it.device)
-        }
-
-        service?.schedule({
-            presenter?.onLoadLastPositions()
-        }, 10, TimeUnit.SECONDS)
-    }
-
     override fun showCompleted() {
-        storage?.deleteAll()
+        //storage?.deleteAll()
         finish()
     }
 
     override fun showRemoveDeviceCompleted() {
-        storage?.removeDevice(deviceId)
-        deviceId = 0
+        //storage?.removeDevice(deviceId)
+        intent.putExtra("deviceId", 0)
     }
 
-    override fun getDevice(): Device? {
-        val device = Device()
-        device.id = deviceId
-        return device
+    override fun showCommandCompleted() {
+        intent.putExtra("deviceId", 0)
+    }
+
+    override fun showPosition(position: Position) {
+        try {
+            (pagerAdapter?.getItem(0) as MapFragment).animateTo(GeoPoint(position.latitude, position.longitude), 15)
+            view_pager.setCurrentItem(0)
+            nav_view.setCheckedItem(R.id.nav_map)
+        } catch (e: Exception) {
+            logger.warn(Log.getStackTraceString(e))
+        }
+    }
+
+    override fun getDeviceId(): Long {
+        return intent.getLongExtra("deviceId", 0)
     }
 
     override fun getCommand(): Command? {
-        command?.deviceId = deviceId
+        command?.deviceId = intent.getLongExtra("deviceId", 0)
         return command
     }
 
@@ -202,6 +193,8 @@ class MainActivity : BaseActivity<MainPresenter>(),
         when (item.itemId) {
             R.id.nav_map -> {
                 view_pager.setCurrentItem(0)
+                val center = calculateMapCenter()
+                (pagerAdapter?.getItem(0) as MapFragment).animateTo(center.first, center.second)
             }
             R.id.nav_devices -> {
                 view_pager.setCurrentItem(1)
@@ -231,13 +224,11 @@ class MainActivity : BaseActivity<MainPresenter>(),
                 if (resultCode == RESULT_OK) {
                     val server = data?.getParcelableExtra<Server>("server")
                     intent.putExtra("server", server)
-                    storage?.createOrUpdateServer(server)
                 }
             REQUEST_CODE_UPDATE_ACCOUNT ->
                 if (resultCode == RESULT_OK) {
                     val user = data?.getParcelableExtra<User>("user")
                     intent.putExtra("session", user)
-                    storage?.createOrUpdateUser(user)
                     mAccountNameView?.text = user?.login
                    // mAccountEmailView?.text = user?.
                 }
@@ -245,7 +236,6 @@ class MainActivity : BaseActivity<MainPresenter>(),
                 if (resultCode == RESULT_OK) {
                     val device = data?.getParcelableExtra<Device>("device")
                     logger.debug("DEVICE: " + device!!.getName())
-                    storage?.createOrUpdateDevice(device)
                 }
         }
     }
@@ -258,7 +248,7 @@ class MainActivity : BaseActivity<MainPresenter>(),
     }
 
     override fun onRemoveDevice(device: Device) {
-        deviceId = device.id
+        intent.putExtra("deviceId", device.id)
         val dialogFragment = ConfirmDialogFragment.newInstance(R.string.deviceTitle, R.string.sharedRemoveConfirm)
         dialogFragment.show(supportFragmentManager, "remove_item_dialog")
     }
@@ -272,24 +262,18 @@ class MainActivity : BaseActivity<MainPresenter>(),
 
 
     override fun onShowOnMap(device: Device) {
-        try {
-            val position = storage?.getPositionByDeviceId(device.id)
-            (pagerAdapter?.getItem(0) as MapFragment).animateTo(GeoPoint(position?.latitude as Double, position?.longitude as Double), 15)
-            view_pager.setCurrentItem(0)
-            nav_view.setCheckedItem(R.id.nav_map)
-        } catch (e: Exception) {
-            logger.warn(Log.getStackTraceString(e))
-        }
+        intent.putExtra("deviceId", device.id)
+        presenter?.onGetPostionByCache()
     }
 
     override fun onSendCommand(device: Device) {
-        deviceId = device.getId();
+        intent.putExtra("deviceId", device.id)
         val dialogFragment = SendCommandDialogFragment.newInstance(device.id)
         dialogFragment.show(supportFragmentManager, "send_command_dialog")
     }
 
     override fun onPositiveClick(dialog: DialogInterface, which: Int) {
-        if (deviceId > 0) {
+        if (intent.getLongExtra("deviceId", 0) > 0) {
             presenter?.onDeleteDeviceButtonClick()
         }
     }
@@ -297,6 +281,19 @@ class MainActivity : BaseActivity<MainPresenter>(),
     override fun onSendCommand(command: Command?) {
         this.command = command;
         presenter?.onSendCommandButtonClick()
+    }
+
+    private fun calculateMapCenter() :Pair<GeoPoint, Int> {
+        val user = intent.getParcelableExtra<User>("session")
+        if (user.userSettings.centerLatitude === 0.0 && user.userSettings.centerLongitude === 0.0 && user.userSettings.zoomLevel === 0) {
+            val server = intent.getParcelableExtra<Server>("server")
+            if (server.latitude === 0.0 && server.longitude === 0.0 && server.zoom === 0) {
+                return Pair(GeoPoint(server.latitude, server.longitude), server.zoom)
+            }
+        } else {
+            return Pair(GeoPoint(user.userSettings.centerLatitude, user.userSettings.centerLongitude), user.userSettings.zoomLevel)
+        }
+        return Pair(GeoPoint(0, 0), 0)
     }
 
     companion object {

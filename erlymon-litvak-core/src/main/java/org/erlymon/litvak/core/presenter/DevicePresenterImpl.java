@@ -29,8 +29,11 @@ import org.erlymon.litvak.core.view.DeviceView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.realm.Realm;
 import rx.Observer;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
 /**
@@ -39,6 +42,7 @@ import rx.subscriptions.Subscriptions;
 public class DevicePresenterImpl implements DevicePresenter {
     private static final Logger logger = LoggerFactory.getLogger(DevicePresenterImpl.class);
     private Model model;
+    private Realm realmdb;
 
     private DeviceView view;
     private Subscription subscription = Subscriptions.empty();
@@ -46,6 +50,7 @@ public class DevicePresenterImpl implements DevicePresenter {
     public DevicePresenterImpl(Context context, DeviceView view) {
         this.view = view;
         this.model = new ModelImpl(context);
+        this.realmdb = Realm.getDefaultInstance();
     }
 
     @Override
@@ -57,6 +62,9 @@ public class DevicePresenterImpl implements DevicePresenter {
 
         if (view.getDevice().getId() == null) {
             subscription = model.createDevice(view.getDevice())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnNext(device -> realmdb.executeTransactionAsync(realm -> realm.copyToRealmOrUpdate(device)))
                     .subscribe(new Observer<Device>() {
                         @Override
                         public void onCompleted() {
@@ -76,6 +84,9 @@ public class DevicePresenterImpl implements DevicePresenter {
                     });
         } else {
             subscription = model.updateDevice(view.getDevice())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnNext(device -> realmdb.executeTransactionAsync(realm -> realm.copyToRealmOrUpdate(device)))
                     .subscribe(new Observer<Device>() {
                         @Override
                         public void onCompleted() {
@@ -101,6 +112,10 @@ public class DevicePresenterImpl implements DevicePresenter {
     public void onStop() {
         if (!subscription.isUnsubscribed()) {
             subscription.unsubscribe();
+        }
+
+        if (!realmdb.isClosed()) {
+            realmdb.close();
         }
     }
 }
