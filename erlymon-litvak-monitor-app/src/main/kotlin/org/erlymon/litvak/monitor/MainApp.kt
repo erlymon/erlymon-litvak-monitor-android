@@ -47,11 +47,13 @@ class MainApp : MultiDexApplication() {
         Stetho.initializeWithDefaults(this);
         Kotpref.init(baseContext)
 
-        Realm.setDefaultConfiguration(RealmConfiguration.Builder(baseContext)
+        // The Realm file will be located in Context.getFilesDir() with name "default.realm"
+        Realm.init(this)
+        Realm.setDefaultConfiguration(RealmConfiguration.Builder()
                 .deleteRealmIfMigrationNeeded()
-                .name("erlymon-litvak-monitor-storage.realm")
                 .build()
         )
+
 
         ApiModule.getInstance().init(applicationContext, MainPref.dns, MainPref.sslOrTls)
     }

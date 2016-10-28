@@ -96,6 +96,9 @@ android {
         }
     }
     */
+    dexOptions {
+        incremental true
+    }
 }
 
 dependencies {
@@ -122,7 +125,7 @@ dependencies {
     compile 'com.github.MKergall:osmbonuspack:v5.8.1'
 
     // realm
-    compile 'io.realm:android-adapters:1.2.1'
+    compile 'io.realm:android-adapters:1.4.0'
 
     // RxJava
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.8.0@aar'
