@@ -129,4 +129,6 @@
     <string name="userLogin">Login</string>
     <string name="positionAddress">Address</string>
     <string name="positionOther">Other</string>
+    <string name="errorPermissionCoarseLocation">Coarse location permissions are needed for show your location.</string>
+    <string name="errorPermissionWriteStorage">Write sotrage permissions are needed for show map.</string>
 </resources>

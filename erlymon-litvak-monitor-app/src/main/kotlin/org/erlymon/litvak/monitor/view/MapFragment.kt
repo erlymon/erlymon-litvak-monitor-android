@@ -18,6 +18,7 @@
  */
 package org.erlymon.litvak.monitor.view
 
+import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
@@ -54,6 +55,8 @@ import org.osmdroid.util.BoundingBoxE6
 import org.osmdroid.views.overlay.TilesOverlay
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import com.jakewharton.rxbinding.view.RxView
+import com.tbruyelle.rxpermissions.RxPermissions
 import io.realm.Realm
 import org.erlymon.litvak.core.model.data.Position
 import org.erlymon.litvak.core.presenter.MapPresenter
@@ -77,6 +80,7 @@ class MapFragment : BaseFragment<MapPresenter>(), MapView {
 
     private var mRadiusMarkerClusterer: DevicesMarkerClusterer? = null
     private var markers: MutableMap<Long, MarkerWithLabel> = HashMap()
+    private var mLocationOverlay: MyLocationNewOverlay? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -95,6 +99,37 @@ class MapFragment : BaseFragment<MapPresenter>(), MapView {
 
         mapview.isTilesScaledToDpi = true
         mapview.setMultiTouchControls(true)
+
+        RxView.clicks(myPlace)
+                .compose(RxPermissions.getInstance(context).ensure(Manifest.permission.ACCESS_COARSE_LOCATION))
+                .subscribe({ granted ->
+                    if (granted) {
+                        if (myPlace.isChecked) {
+                            mLocationOverlay?.enableFollowLocation()
+                            mLocationOverlay?.enableMyLocation()
+                            mLocationOverlay?.runOnFirstFix {
+                                mapview.post {
+                                    try {
+                                        mapview.controller.setZoom(15)
+                                        mapview.controller.animateTo(GeoPoint(
+                                                mLocationOverlay!!.lastFix.latitude,
+                                                mLocationOverlay!!.lastFix.longitude
+                                        ))
+                                        mapview.postInvalidate()
+                                    } catch (e: Exception) {
+
+                                    }
+                                }
+                            }
+                        } else {
+                            mLocationOverlay?.disableFollowLocation()
+                            mLocationOverlay?.disableMyLocation()
+                        }
+                    } else {
+                        myPlace.isChecked = false
+                        makeToast(myPlace, getString(R.string.errorPermissionCoarseLocation))
+                    }
+                })
     }
 
     override fun onResume() {
@@ -103,10 +138,20 @@ class MapFragment : BaseFragment<MapPresenter>(), MapView {
         mRadiusMarkerClusterer = DevicesMarkerClusterer(context)
         mRadiusMarkerClusterer?.setIcon(BitmapFactory.decodeResource(resources, R.drawable.marker_cluster))
         mapview.overlays.add(mRadiusMarkerClusterer)
+
+        mLocationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(activity), mapview)
+        mLocationOverlay?.disableFollowLocation()
+        mLocationOverlay?.disableMyLocation()
+        mapview.getOverlays().add(mLocationOverlay)
+
         presenter?.onStart()
     }
 
     override fun onPause() {
+        mLocationOverlay?.disableFollowLocation()
+        mLocationOverlay?.disableMyLocation()
+
+        mapview.overlays.remove(mLocationOverlay)
         mapview.overlays.remove(mRadiusMarkerClusterer)
         markers.clear()
         super.onPause()
@@ -360,31 +405,6 @@ class MapFragment : BaseFragment<MapPresenter>(), MapView {
             logger.warn(Log.getStackTraceString(e))
         }
 
-    }
-
-    private fun mayRequestAccessCoarseLocation(): Boolean {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true
-        }
-        if (activity.checkSelfPermission(ACCESS_COARSE_LOCATION) === PackageManager.PERMISSION_GRANTED) {
-            return true
-        }
-        if (shouldShowRequestPermissionRationale(ACCESS_COARSE_LOCATION)) {
-            Toast.makeText(context, R.string.errorPermissionRationale, Toast.LENGTH_SHORT)
-            /*
-            Snackbar.make(mSignInEmailView, R.string.errorPermissionRationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{ACCESS_COARSE_LOCATION}, REQUEST_ACCESS_COARSE_LOCATION);
-                        }
-                    });
-            */
-        } else {
-            requestPermissions(arrayOf<String>(ACCESS_COARSE_LOCATION), REQUEST_ACCESS_COARSE_LOCATION)
-        }
-        return false
     }
 
     /**

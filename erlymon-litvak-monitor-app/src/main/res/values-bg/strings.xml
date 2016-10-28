@@ -111,4 +111,6 @@
     <string name="aboutDescription">TraccarLitvakM (fork Erlymon Monitor) is an Android  application. It can work with Traccar Web UI Mod (Tracckar Litvak) open source server software.</string>
     <string name="aboutLicense">This application is free and open source, source code is licensed under GNU General Public License, Version 3.0 and available on GitHub.</string>
     <string name="userTitle">Потребител</string>
+    <string name="errorPermissionCoarseLocation">Coarse location permissions are needed for show your location.</string>
+    <string name="errorPermissionWriteStorage">Write sotrage permissions are needed for show map.</string>
 </resources>

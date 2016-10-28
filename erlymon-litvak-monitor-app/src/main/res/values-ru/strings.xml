@@ -111,4 +111,6 @@
     <string name="userLogin">Login</string>
     <string name="positionAddress">Address</string>
     <string name="positionOther">Other</string>
+    <string name="errorPermissionCoarseLocation">Доступ к местоположению необходим для отображение авшего местоположения на карте.</string>
+    <string name="errorPermissionWriteStorage">Доступ на запись к внутренней памяти необходим для кеширования карт.</string>
 </resources>

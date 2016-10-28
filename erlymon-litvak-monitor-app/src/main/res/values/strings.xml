@@ -81,6 +81,8 @@
     <string name="errorIncorrectPassword">This password is incorrect</string>
     <string name="errorFieldRequired">This field is required</string>
     <string name="errorPermissionRationale">Contacts permissions are needed for providing emailOrLogin completions.</string>
+    <string name="errorPermissionCoarseLocation">Coarse location permissions are needed for show your location.</string>
+    <string name="errorPermissionWriteStorage">Write sotrage permissions are needed for show map.</string>
 
     <string name="sharedDateTimeFormat" translatable="false">dd/MM/yyyy HH:mm:ss</string>
 

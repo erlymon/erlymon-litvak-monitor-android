@@ -124,6 +124,10 @@ dependencies {
     // realm
     compile 'io.realm:android-adapters:1.2.1'
 
+    // RxJava
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.8.0@aar'
+    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+
     // litvak core
     compile project(":erlymon-litvak-core")
 }

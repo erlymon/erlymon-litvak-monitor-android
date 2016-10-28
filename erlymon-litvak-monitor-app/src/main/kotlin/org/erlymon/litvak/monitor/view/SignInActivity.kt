@@ -20,17 +20,12 @@ package org.erlymon.litvak.monitor.view
 
 import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.PopupMenu
-
-import org.slf4j.LoggerFactory
-
-import kotlinx.android.synthetic.main.activity_signin.*
+import com.jakewharton.rxbinding.view.RxView
+import com.tbruyelle.rxpermissions.RxPermissions
 import kotlinx.android.synthetic.main.content_signin.*
 import org.erlymon.litvak.core.model.api.ApiModule
-import org.erlymon.litvak.core.model.data.Server
 import org.erlymon.litvak.core.model.data.User
 import org.erlymon.litvak.core.presenter.SignInPresenter
 import org.erlymon.litvak.core.presenter.SignInPresenterImpl
@@ -38,6 +33,7 @@ import org.erlymon.litvak.core.view.SignInView
 import org.erlymon.litvak.monitor.MainPref
 import org.erlymon.litvak.monitor.R
 import org.erlymon.litvak.monitor.view.fragment.SettingsDialogFragment
+import org.slf4j.LoggerFactory
 
 
 class SignInActivity : BaseActivity<SignInPresenter>(), SignInView, SettingsDialogFragment.ServerConfigListener {
@@ -50,20 +46,21 @@ class SignInActivity : BaseActivity<SignInPresenter>(), SignInView, SettingsDial
 
         sign_in_login.setText(MainPref.login)
         sign_in_password.setText(MainPref.password);
-        sign_in_button.setOnClickListener { v ->
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                // Check Permissions Now
-                ActivityCompat.requestPermissions(this,  Array(1, { i -> Manifest.permission.WRITE_EXTERNAL_STORAGE }),  REQUEST_WRITE_STORAGE);
-            } else {
-                // permission has been granted, continue as usual
-                presenter?.onSignInButtonClick()
-            }
+        RxView.clicks(sign_in_button)
+                .compose(RxPermissions.getInstance(this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .subscribe({ granted ->
+                    if (granted) {
+                        presenter?.onSignInButtonClick()
+                    } else {
+                        makeToast(sign_in_button, getString(R.string.errorPermissionWriteStorage))
+                    }
+                })
 
-        }
         sign_up_button.setOnClickListener { v ->
             val intent = Intent(this@SignInActivity, SignUpActivity::class.java)
             startActivity(intent)
         }
+
         serverConfig.setOnClickListener { v ->
             val popupMenu = PopupMenu(this@SignInActivity, serverConfig)
             popupMenu.inflate(R.menu.settings_popupmenu)
@@ -85,33 +82,14 @@ class SignInActivity : BaseActivity<SignInPresenter>(), SignInView, SettingsDial
             }
             popupMenu.show()
         }
-
-        //presenter?.onGetServer()
     }
 
     override fun onChangeServerConfig(dns: String, sslOrTls: Boolean) {
         MainPref.dns = dns
         MainPref.sslOrTls = sslOrTls
         ApiModule.getInstance().init(applicationContext, MainPref.dns, MainPref.sslOrTls)
-        //presenter?.onGetServer()
-    }
-/*
-    override fun showServer(server: Server) {
-        logger.debug("showServer => " + server.toString())
-        storage?.createOrUpdateServer(server)
-        presenter?.onGetSession()
     }
 
-    override fun showSession(user: User) {
-        logger.debug("showSession => " + user.toString())
-        storage?.createOrUpdateUser(user)
-
-        val intent = Intent(this@SignInActivity, MainActivity::class.java)
-                .putExtra("server", storage?.firstServer)
-                .putExtra("session", user)
-        startActivity(intent)
-    }
-*/
     override fun showData(user: User) {
         logger.debug("showData => " + user.toString())
 
@@ -136,21 +114,7 @@ class SignInActivity : BaseActivity<SignInPresenter>(), SignInView, SettingsDial
         return sign_in_password.text.toString()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_WRITE_STORAGE) {
-            if(grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // We can now safely use the API we requested access to
-                presenter?.onSignInButtonClick()
-            } else {
-                // Permission was denied or request was cancelled
-                makeToast(ll_sign_in, getString(R.string.errorPermissionRationale))
-            }
-        }
-    }
-
     companion object {
         private val logger = LoggerFactory.getLogger(SignInActivity::class.java)
-        private val REQUEST_WRITE_STORAGE = 1
     }
 }
