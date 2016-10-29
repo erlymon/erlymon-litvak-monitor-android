@@ -186,6 +186,14 @@ class MainActivity : BaseActivity<MainPresenter>(),
         makeToast(toolbar, error)
     }
 
+    override fun showProgressDialog() {
+        progressDialog?.show()
+    }
+
+    override fun hideProgressDialog() {
+        progressDialog?.hide()
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.

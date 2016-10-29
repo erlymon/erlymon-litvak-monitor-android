@@ -60,6 +60,7 @@ public class UserPresenterImpl implements UserPresenter {
             subscription.unsubscribe();
         }
 
+        view.showProgressDialog();
         if (view.getUser().getId() == 0) {
             subscription = model.register(view.getUser())
                     .subscribeOn(Schedulers.io())
@@ -73,12 +74,14 @@ public class UserPresenterImpl implements UserPresenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            view.hideProgressDialog();
                             logger.error(Log.getStackTraceString(e));
                             view.showError(e.getMessage());
                         }
 
                         @Override
                         public void onNext(User data) {
+                            view.hideProgressDialog();
                             view.showData(data);
                         }
                     });
@@ -95,12 +98,14 @@ public class UserPresenterImpl implements UserPresenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            view.hideProgressDialog();
                             logger.error(Log.getStackTraceString(e));
                             view.showError(e.getMessage());
                         }
 
                         @Override
                         public void onNext(Void data) {
+                            view.hideProgressDialog();
                             view.showData(view.getUser());
                         }
                     });

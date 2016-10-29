@@ -26,6 +26,9 @@ import org.erlymon.litvak.core.model.data.User;
  */
 public interface SignInView extends View {
     void showData(User user);
+    void showProgressDialog();
+    void hideProgressDialog();
+    
     String getLogin();
     String getPassword();
 }

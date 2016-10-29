@@ -68,6 +68,7 @@ public class MainPresenterImpl implements MainPresenter {
             subscription.unsubscribe();
         }
 
+        view.showProgressDialog();
         subscription = model.deleteSession()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -80,6 +81,7 @@ public class MainPresenterImpl implements MainPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        view.hideProgressDialog();
                         logger.error(Log.getStackTraceString(e));
                         view.showError(e.getMessage());
                     }
@@ -87,6 +89,7 @@ public class MainPresenterImpl implements MainPresenter {
                     @Override
                     public void onNext(Boolean data) {
                         view.showCompleted();
+                        view.hideProgressDialog();
                     }
                 });
     }
@@ -97,6 +100,7 @@ public class MainPresenterImpl implements MainPresenter {
             subscription.unsubscribe();
         }
 
+        view.showProgressDialog();
         Device device = new Device();
         device.setId(view.getDeviceId());
         subscription = model.deleteDevice(device)
@@ -117,12 +121,14 @@ public class MainPresenterImpl implements MainPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        view.hideProgressDialog();
                         logger.error(Log.getStackTraceString(e));
                         view.showError(e.getMessage());
                     }
 
                     @Override
                     public void onNext(Device data) {
+                        view.hideProgressDialog();
                         view.showRemoveDeviceCompleted();
                     }
                 });
@@ -134,6 +140,7 @@ public class MainPresenterImpl implements MainPresenter {
             subscription.unsubscribe();
         }
 
+        view.showProgressDialog();
         subscription = model.createCommand(view.getCommand())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -145,12 +152,14 @@ public class MainPresenterImpl implements MainPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        view.hideProgressDialog();
                         logger.error(Log.getStackTraceString(e));
                         view.showError(e.getMessage());
                     }
 
                     @Override
                     public void onNext(Void data) {
+                        view.hideProgressDialog();
                         view.showCommandCompleted();
                     }
                 });

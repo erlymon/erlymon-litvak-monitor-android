@@ -76,6 +76,14 @@ class UserActivity : BaseActivity<UserPresenter>(), UserView {
         }
     }
 
+    override fun showProgressDialog() {
+        progressDialog?.show()
+    }
+
+    override fun hideProgressDialog() {
+        progressDialog?.hide()
+    }
+
     override fun showData(data: User) {
         logger.debug(user.toString())
         val intent = Intent()

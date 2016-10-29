@@ -18,20 +18,25 @@
  */
 package org.erlymon.litvak.monitor.view
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import org.erlymon.litvak.core.presenter.Presenter
+import org.erlymon.litvak.monitor.R
 
 /**
  * Created by Sergey Penkovsky <sergey.penkovsky@gmail.com> on 5/12/16.
  */
 open class BaseActivity<P : Presenter> : AppCompatActivity() {
     protected var presenter: P? = null
+    protected var progressDialog: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState :Bundle?) {
         super.onCreate(savedInstanceState)
+        progressDialog = ProgressDialog(this);
+        progressDialog?.setMessage(getString(R.string.sharedLoading))
     }
 
     override fun onDestroy() {

@@ -28,6 +28,9 @@ import java.util.Date;
  */
 public interface PositionsView extends View {
     void showData(Position[] data);
+    void showProgressDialog();
+    void hideProgressDialog();
+
     Device getDevice();
     Date getTimeFrom();
     Date getTimeTo();

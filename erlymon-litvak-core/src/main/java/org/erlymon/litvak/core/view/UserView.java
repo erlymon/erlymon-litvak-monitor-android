@@ -24,6 +24,9 @@ import org.erlymon.litvak.core.model.data.User;
  * Created by Sergey Penkovsky <sergey.penkovsky@gmail.com> on 5/4/16.
  */
 public interface UserView extends View {
+    void showProgressDialog();
+    void hideProgressDialog();
+
     void showData(User data);
     User getUser();
 }

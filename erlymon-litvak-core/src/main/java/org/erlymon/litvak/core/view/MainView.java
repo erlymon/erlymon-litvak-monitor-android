@@ -31,6 +31,9 @@ public interface MainView extends View {
     void showRemoveDeviceCompleted();
     void showCommandCompleted();
     void showPosition(Position position);
+    void showProgressDialog();
+    void hideProgressDialog();
+
     long getDeviceId();
     Command getCommand();
 }

@@ -55,6 +55,7 @@ public class PositionsPresenterImpl implements PositionsPresenter {
             subscription.unsubscribe();
         }
 
+        view.showProgressDialog();
         subscription = model.getPositions(view.getDevice(), view.getTimeFrom(), view.getTimeTo(), false)
                 .subscribe(new Observer<Position[]>() {
                     @Override
@@ -64,12 +65,14 @@ public class PositionsPresenterImpl implements PositionsPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        view.hideProgressDialog();
                         logger.error(Log.getStackTraceString(e));
                         view.showError(e.getMessage());
                     }
 
                     @Override
                     public void onNext(Position[] data) {
+                        view.hideProgressDialog();
                         view.showData(data);
                     }
                 });

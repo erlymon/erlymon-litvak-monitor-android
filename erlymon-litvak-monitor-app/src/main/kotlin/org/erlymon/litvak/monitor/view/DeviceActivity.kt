@@ -72,6 +72,14 @@ class DeviceActivity : BaseActivity<DevicePresenter>(), DeviceView {
         }
     }
 
+    override fun showProgressDialog() {
+        progressDialog?.show()
+    }
+
+    override fun hideProgressDialog() {
+        progressDialog?.hide()
+    }
+
     override fun showData(data: Device) {
         logger.debug(data.toString())
         val intent = Intent()

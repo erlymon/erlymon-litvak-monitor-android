@@ -60,6 +60,7 @@ public class DevicePresenterImpl implements DevicePresenter {
             subscription.unsubscribe();
         }
 
+        view.showProgressDialog();
         if (view.getDevice().getId() == null) {
             subscription = model.createDevice(view.getDevice())
                     .subscribeOn(Schedulers.io())
@@ -73,12 +74,14 @@ public class DevicePresenterImpl implements DevicePresenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            view.hideProgressDialog();
                             logger.error(Log.getStackTraceString(e));
                             view.showError(e.getMessage());
                         }
 
                         @Override
                         public void onNext(Device data) {
+                            view.hideProgressDialog();
                             view.showData(data);
                         }
                     });
@@ -95,12 +98,14 @@ public class DevicePresenterImpl implements DevicePresenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            view.hideProgressDialog();
                             logger.error(Log.getStackTraceString(e));
                             view.showError(e.getMessage());
                         }
 
                         @Override
                         public void onNext(Device data) {
+                            view.hideProgressDialog();
                             view.showData(data);
                         }
                     });

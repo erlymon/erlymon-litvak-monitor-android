@@ -208,6 +208,14 @@ class PositionsActivity : BaseActivity<PositionsPresenter>(), PositionsView, Dat
         }
     }
 
+    override fun showProgressDialog() {
+        progressDialog?.show()
+    }
+
+    override fun hideProgressDialog() {
+        progressDialog?.hide()
+    }
+
     override fun showData(data: Array<out Position>) {
         createTrack(data)
         createList(data)

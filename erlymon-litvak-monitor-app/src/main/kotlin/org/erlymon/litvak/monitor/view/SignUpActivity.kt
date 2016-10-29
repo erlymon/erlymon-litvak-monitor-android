@@ -43,6 +43,14 @@ class SignUpActivity : BaseActivity<UserPresenter>(), UserView {
         fab_account_save.setOnClickListener { v -> presenter?.onSaveButtonClick() }
     }
 
+    override fun showProgressDialog() {
+        progressDialog?.show()
+    }
+
+    override fun hideProgressDialog() {
+        progressDialog?.hide()
+    }
+
     override fun showData(data: User) {
         val intent = Intent()
         intent.putExtra("user", user)

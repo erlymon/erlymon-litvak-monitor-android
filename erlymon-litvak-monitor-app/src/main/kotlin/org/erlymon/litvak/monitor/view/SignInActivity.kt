@@ -90,6 +90,14 @@ class SignInActivity : BaseActivity<SignInPresenter>(), SignInView, SettingsDial
         ApiModule.getInstance().init(applicationContext, MainPref.dns, MainPref.sslOrTls)
     }
 
+    override fun showProgressDialog() {
+        progressDialog?.show()
+    }
+
+    override fun hideProgressDialog() {
+        progressDialog?.hide()
+    }
+
     override fun showData(user: User) {
         logger.debug("showData => " + user.toString())
 

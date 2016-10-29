@@ -24,6 +24,9 @@ import org.erlymon.litvak.core.model.data.Device;
  * Created by Sergey Penkovsky <sergey.penkovsky@gmail.com> on 5/4/16.
  */
 public interface DeviceView extends View {
+    void showProgressDialog();
+    void hideProgressDialog();
+
     void showData(Device data);
     Device getDevice();
 }

@@ -69,6 +69,7 @@ public class SignInPresenterImpl implements SignInPresenter {
             subscription.unsubscribe();
         }
 
+        view.showProgressDialog();
         subscription = model.createSession(view.getLogin(), view.getPassword())
                 .subscribeOn(Schedulers.io())
                 //.flatMap(user -> model.getDevices().flatMap(devices -> Observable.just(new Pair<>(user, devices))))
@@ -89,11 +90,13 @@ public class SignInPresenterImpl implements SignInPresenter {
                     public void onError(Throwable e) {
                         logger.error(Log.getStackTraceString(e));
                         view.showError(e.getMessage());
+                        view.hideProgressDialog();
                     }
 
                     @Override
                     public void onNext(Triple<User,Device[], Position[]> result) {
                         view.showData(result.first);
+                        view.hideProgressDialog();
                     }
                 });
     }
