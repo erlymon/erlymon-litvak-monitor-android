@@ -45,8 +45,6 @@ import org.erlymon.litvak.monitor.view.fragment.SendCommandDialogFragment
 import org.osmdroid.util.GeoPoint
 
 import org.slf4j.LoggerFactory
-import java.util.concurrent.Executors
-import java.util.concurrent.ScheduledExecutorService
 
 class MainActivity : BaseActivity<MainPresenter>(),
         MainView,
@@ -54,13 +52,8 @@ class MainActivity : BaseActivity<MainPresenter>(),
         DevicesFragment.OnActionDeviceListener,
         ConfirmDialogFragment.ConfirmDialogListener,
         SendCommandDialogFragment.SendCommandDialogListener {
-
-    private var service: ScheduledExecutorService? = null;
     private var pagerAdapter: CustomFragmentPagerAdapter? = null
-
     private var mAccountNameView: TextView? = null
-    //private var deviceId: Long = 0
-    private var command: Command? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +61,6 @@ class MainActivity : BaseActivity<MainPresenter>(),
 
         setSupportActionBar(toolbar)
 
-        service = Executors.newSingleThreadScheduledExecutor()
         presenter = MainPresenterImpl(this, this)
 
         val linearLayout = nav_view.getHeaderView(0) as LinearLayout
@@ -130,11 +122,6 @@ class MainActivity : BaseActivity<MainPresenter>(),
         }
     }
 
-    override fun onDestroy() {
-        service?.shutdown()
-        super.onDestroy();
-    }
-
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
@@ -178,8 +165,7 @@ class MainActivity : BaseActivity<MainPresenter>(),
     }
 
     override fun getCommand(): Command? {
-        command?.deviceId = intent.getLongExtra("deviceId", 0)
-        return command
+        return intent.getParcelableExtra<Command>("command")
     }
 
     override fun showError(error: String) {
@@ -286,8 +272,9 @@ class MainActivity : BaseActivity<MainPresenter>(),
         }
     }
 
-    override fun onSendCommand(command: Command?) {
-        this.command = command;
+    override fun onSendCommand(command: Command) {
+        command.deviceId = intent.getLongExtra("deviceId", 0)
+        intent.putExtra("command", command)
         presenter?.onSendCommandButtonClick()
     }
 
