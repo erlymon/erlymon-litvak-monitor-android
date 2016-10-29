@@ -188,7 +188,9 @@ class MapFragment : BaseFragment<MapPresenter>(), MapView {
 
     override fun showLastPositions(positions: Array<out Position>) {
         positions.forEach { position ->
-            updateUnitMarker(position.device, position)
+            if (position.device != null) {
+                updateUnitMarker(position.device, position)
+            }
         }
         mRadiusMarkerClusterer?.invalidate()
         mapview?.postInvalidate()
