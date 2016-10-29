@@ -97,7 +97,7 @@ android {
     }
     */
     dexOptions {
-        incremental true
+        incremental false
     }
 }
 
