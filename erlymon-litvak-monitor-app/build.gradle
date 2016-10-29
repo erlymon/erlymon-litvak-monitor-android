@@ -96,9 +96,6 @@ android {
         }
     }
     */
-    dexOptions {
-        incremental false
-    }
 }
 
 dependencies {

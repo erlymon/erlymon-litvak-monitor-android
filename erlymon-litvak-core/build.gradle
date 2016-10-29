@@ -47,9 +47,6 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.1.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.1.1'
     compile "com.squareup.okhttp3:okhttp-urlconnection:3.1.1"
-    compile 'com.squareup.okhttp3:okhttp-ws:3.1.1'
-
-    compile "com.appunite:websockets-rxjava:4.0.1"
 
     // cookie
     compile 'com.github.franmontiel:PersistentCookieJar:v0.9.3'
