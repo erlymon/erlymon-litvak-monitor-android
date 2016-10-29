@@ -152,6 +152,7 @@ class MainActivity : BaseActivity<MainPresenter>(),
 
     override fun showPosition(position: Position) {
         try {
+            (pagerAdapter?.getItem(0) as MapFragment).setTrackingDevice(deviceId)
             (pagerAdapter?.getItem(0) as MapFragment).animateTo(GeoPoint(position.latitude, position.longitude), 15)
             view_pager.setCurrentItem(0)
             nav_view.setCheckedItem(R.id.nav_map)
@@ -188,6 +189,7 @@ class MainActivity : BaseActivity<MainPresenter>(),
             R.id.nav_map -> {
                 view_pager.setCurrentItem(0)
                 val center = calculateMapCenter()
+                (pagerAdapter?.getItem(0) as MapFragment).setTrackingDevice(0)
                 (pagerAdapter?.getItem(0) as MapFragment).animateTo(center.first, center.second)
             }
             R.id.nav_devices -> {

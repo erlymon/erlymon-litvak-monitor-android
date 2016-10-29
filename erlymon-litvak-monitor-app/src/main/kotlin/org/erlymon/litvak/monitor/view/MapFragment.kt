@@ -82,6 +82,8 @@ class MapFragment : BaseFragment<MapPresenter>(), MapView {
     private var markers: MutableMap<Long, MarkerWithLabel> = HashMap()
     private var mLocationOverlay: MyLocationNewOverlay? = null
 
+    private var trackingDeviceId: Long = 0
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -157,6 +159,10 @@ class MapFragment : BaseFragment<MapPresenter>(), MapView {
         super.onPause()
     }
 
+    fun setTrackingDevice(deviceId: Long) {
+        trackingDeviceId = deviceId
+    }
+
     fun animateTo(geoPoint: GeoPoint, zoom: Int) {
         mapview.controller.setZoom(zoom)
         mapview.controller.animateTo(geoPoint)
@@ -192,6 +198,12 @@ class MapFragment : BaseFragment<MapPresenter>(), MapView {
                 updateUnitMarker(position.device, position)
             }
         }
+
+        if (markers[trackingDeviceId] != null) {
+            mapview.controller.setZoom(15)
+            mapview.controller.animateTo(markers[trackingDeviceId]!!.position)
+        }
+
         mRadiusMarkerClusterer?.invalidate()
         mapview?.postInvalidate()
     }
