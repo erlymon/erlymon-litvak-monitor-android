@@ -25,7 +25,9 @@ import android.util.Log;
 
 import org.erlymon.litvak.core.model.Model;
 import org.erlymon.litvak.core.model.ModelImpl;
+import org.erlymon.litvak.core.model.api.util.tuple.Triple;
 import org.erlymon.litvak.core.model.data.Device;
+import org.erlymon.litvak.core.model.data.Position;
 import org.erlymon.litvak.core.model.data.User;
 import org.erlymon.litvak.core.view.SignInView;
 import org.slf4j.Logger;
@@ -69,13 +71,15 @@ public class SignInPresenterImpl implements SignInPresenter {
 
         subscription = model.createSession(view.getLogin(), view.getPassword())
                 .subscribeOn(Schedulers.io())
-                .flatMap(user -> model.getDevices().flatMap(devices -> Observable.just(new Pair<>(user, devices))))
+                //.flatMap(user -> model.getDevices().flatMap(devices -> Observable.just(new Pair<>(user, devices))))
+                .flatMap(user -> Observable.zip(model.getDevices(), model.getLatestPositions(), (devices, positions) -> new Triple<>(user, devices, positions)).asObservable())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(result -> realmdb.executeTransaction(realm -> {
                     realm.copyToRealmOrUpdate(result.first);
                     realm.copyToRealmOrUpdate(Arrays.asList(result.second));
+                    realm.copyToRealmOrUpdate(Arrays.asList(result.third));
                 }))
-                .subscribe(new Observer<Pair<User,Device[]>>() {
+                .subscribe(new Observer<Triple<User,Device[], Position[]>>() {
                     @Override
                     public void onCompleted() {
 
@@ -88,7 +92,7 @@ public class SignInPresenterImpl implements SignInPresenter {
                     }
 
                     @Override
-                    public void onNext(Pair<User,Device[]> result) {
+                    public void onNext(Triple<User,Device[], Position[]> result) {
                         view.showData(result.first);
                     }
                 });

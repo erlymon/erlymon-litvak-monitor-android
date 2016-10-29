@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
@@ -22,6 +23,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 import rx.subscriptions.Subscriptions;
 
 /**
@@ -34,7 +36,7 @@ public class MapPresenterImpl implements MapPresenter {
     private Realm realmdb;
 
     private MapView view;
-    private Subscription subscription = Subscriptions.empty();
+    private CompositeSubscription mCompositeSubscription  = new CompositeSubscription();
 
     public MapPresenterImpl(Context context, MapView view) {
         this.view = view;
@@ -44,11 +46,7 @@ public class MapPresenterImpl implements MapPresenter {
 
     @Override
     public void onStart() {
-        if (!subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-        }
-
-        subscription = Observable.interval(5, TimeUnit.SECONDS, Schedulers.io())
+        mCompositeSubscription.add(Observable.interval(5, TimeUnit.SECONDS, Schedulers.io())
                 .flatMap(new Func1<Long, Observable<Position[]>>() {
                     @Override
                     public Observable<Position[]> call(Long aLong) {
@@ -69,13 +67,31 @@ public class MapPresenterImpl implements MapPresenter {
                     logger.debug(positions.toString());
                     view.showLastPositions(positions);
                 })
-                .subscribe();
+                .subscribe()
+        );
+
+        mCompositeSubscription.add(realmdb.where(Position.class).findAll().asObservable()
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(new Func1<RealmResults<Position>, Observable<Position[]>>() {
+                    @Override
+                    public Observable<Position[]> call(RealmResults<Position> results) {
+                        return Observable.just(results.toArray(new Position[results.size()]));
+                    }
+                })
+                .doOnNext(positions -> {
+                    logger.debug(positions.toString());
+                    view.showLastPositions(positions);
+                })
+                .doOnError(err -> logger.error(Log.getStackTraceString(err)))
+                .subscribe()
+        );
     }
 
     @Override
     public void onStop() {
-        if (!subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
+        if (!mCompositeSubscription.isUnsubscribed()) {
+            mCompositeSubscription.unsubscribe();
         }
 
         if (!realmdb.isClosed()) {
